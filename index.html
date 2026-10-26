@@ -9,44 +9,47 @@
 body { font-family: 'Special Elite', 'Courier New', monospace;
        background: url('https://images.unsplash.com/photo-1770105328579-a4aeaa36ddea?fm=jpg&q=60&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D')
                    center/cover no-repeat fixed;
-       color: #e6edf3; display: flex; justify-content: center; align-items: center;
+       color: #2b241c; display: flex; justify-content: center; align-items: center;
        min-height: 100vh; margin: 0; }
 
-/* dark overlay so text stays readable */
+/* dark overlay so the page still reads dark around the paper */
 body::before { content: ""; position: fixed; inset: 0;
                background: rgba(13, 17, 23, .75);
                z-index: -1; }
 
-.card { background: rgba(22, 27, 34, .55);
-         backdrop-filter: blur(10px);
-         border: 1px solid rgba(255,255,255,.08);
-         padding: 2rem 2.5rem; border-radius: 16px; width: 90%;
-         max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+.card { background: #ece5d3;
+         border: 1px solid #b8ad93;
+         border-radius: 3px;
+         box-shadow: 2px 3px 12px rgba(0,0,0,.5);
+         padding: 2rem 2.5rem; width: 90%;
+         max-width: 480px; }
 
-h1 { margin-top: 0; font-weight: 400; text-align: center; }
+h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px; }
 h2 { font-weight: 400; }
 
 .level-img { width: 100%; height: 160px; object-fit: cover;
-             border-radius: 12px; margin-bottom: 1rem;
-             filter: brightness(.85) sepia(.15); }
+             border-radius: 2px; margin-bottom: 1rem;
+             border: 1px solid #b8ad93;
+             filter: sepia(.3) contrast(.95); }
 
-.progress-bar { height: 8px; background: rgba(255,255,255,.1);
-                border-radius: 4px; overflow: hidden; margin-bottom: .5rem; }
-.progress-bar-fill { height: 100%; width: 0%; background: #2ea043;
-                     border-radius: 4px; transition: width 2s ease; }
-.progress { font-size: .9rem; opacity: .8; margin-bottom: 1rem; }
+.progress-bar { height: 8px; background: rgba(43, 36, 28, .15);
+                border-radius: 2px; overflow: hidden; margin-bottom: .5rem; }
+.progress-bar-fill { height: 100%; width: 0%; background: #5a6e37;
+                     border-radius: 2px; transition: width 2s ease; }
+.progress { font-size: .9rem; opacity: .75; margin-bottom: 1rem; }
 
 button { display: block; width: 100%; margin: 8px 0; padding: 12px;
           font-size: 1rem; font-family: inherit;
-          border: none; border-radius: 10px; background: #21262d; color: #e6edf3;
+          border: 1px solid #2b241c; border-radius: 2px;
+          background: #d9d0ba; color: #2b241c;
           cursor: pointer;
           transition: transform 1.2s ease, box-shadow 1.2s ease, background 1.2s ease; }
 button:hover:not(:disabled) { transform: translateY(-2px);
-                               box-shadow: 0 6px 14px rgba(0,0,0,.5);
-                               background: #303940; }
+                               box-shadow: 0 6px 14px rgba(0,0,0,.35);
+                               background: #cfc5ab; }
 button:disabled { opacity: .5; cursor: default; }
-button.correct { background: #2ea043; }
-button.wrong { background: #b62324; }
+button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
+button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 .feedback { min-height: 1.5rem; }
 .hidden { display: none; }
@@ -63,24 +66,24 @@ button.wrong { background: #b62324; }
   <!-- Page 0: Intro -->
   <div id="page0" class="intro">
     <h1>Quiz Climber</h1>
-    <p style="text-align:center">A climb from mountain to moon — one correct answer at a time.</p>
-    <button id="startBtn">Start climbing</button>
+    <p style="text-align:center">Field log of an expedition from mountain to moon. One correct answer advances the climb.</p>
+    <button id="startBtn">Begin the climb</button>
   </div>
 
   <!-- Page 1: Instructions -->
   <div id="page1" class="intro hidden">
     <h1>How it works</h1>
-    <p>The climb is split into <b>levels</b>, each with a few questions.
-       Pick the right answer to move up; every level has its own picture and theme.</p>
+    <p>The ascent is divided into <b>stations</b>, each with a few questions.
+       Answer correctly to gain altitude. Every station has its own photograph and theme.</p>
     <button id="instrBtn1">Next</button>
   </div>
 
   <!-- Page 2: Instructions -->
   <div id="page2" class="intro hidden">
     <h1>One rule</h1>
-    <p>A <b>wrong answer sends you back to the start of the level</b> — so think before you click!
-       Your score keeps what you earned along the way.</p>
-    <button id="instrBtn2">Let's go!</button>
+    <p>A <b>wrong answer sends you back to the base of the station</b> — consider carefully before you commit.
+       The score keeps a record of everything earned on the way up.</p>
+    <button id="instrBtn2">Onward</button>
   </div>
 
   <!-- Page 3: The game -->
@@ -99,17 +102,17 @@ button.wrong { background: #b62324; }
 
 <script>
 const levels = [
-  { name: "The Mountain", image: "images/mountain.jpg", questions: [
+  { name: "Station One: The Mountain", image: "images/mountain.jpg", questions: [
     { q: "What is 7 × 8?", options: ["54", "56", "64"], answer: 1 },
     { q: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury"], answer: 2 },
     { q: "What color do you get mixing blue and yellow?", options: ["Green", "Purple", "Orange"], answer: 0 }
   ]},
-  { name: "The Volcano", image: "images/volcano.jpg", questions: [
+  { name: "Station Two: The Volcano", image: "images/volcano.jpg", questions: [
     { q: "What is the capital of Japan?", options: ["Osaka", "Kyoto", "Tokyo"], answer: 2 },
     { q: "How many continents are there?", options: ["5", "6", "7"], answer: 2 },
     { q: "Which language runs in a web browser?", options: ["Python", "JavaScript", "C++"], answer: 1 }
   ]},
-  { name: "The Rocket", image: "images/rocket.jpg", questions: [
+  { name: "Station Three: The Rocket", image: "images/rocket.jpg", questions: [
     { q: "What does HTML stand for?", options: ["HyperText Markup Language", "HighText Machine Language", "Hyperlink Text Mode Language"], answer: 0 },
     { q: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
     { q: "What year did the first man walk on the Moon?", options: ["1969", "1972", "1965"], answer: 0 }
@@ -148,12 +151,12 @@ function showQuestion() {
   const q = cur.questions[questionIndex];
   const total = cur.questions.length;
 
-  document.getElementById("title").textContent = `Quiz Climber — ${cur.name}`;
+  document.getElementById("title").textContent = cur.name;
   img.src = q.image || cur.image;
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
-    `Level ${level + 1} of ${levels.length} — Question ${questionIndex + 1}/${total} — Score: ${score}`;
+    `Station ${level + 1} of ${levels.length} — Question ${questionIndex + 1}/${total} — Score: ${score}`;
   document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
   const box = document.getElementById("options");
   box.innerHTML = "";
@@ -180,13 +183,13 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "Correct!";
+    fb.textContent = "Correct — altitude gained.";
     nextBtn.dataset.mode = "next";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[cur.questions[questionIndex].answer].classList.add("correct");
-    fb.textContent = "Wrong — back to the start of this level!";
-    nextBtn.textContent = "Restart level";
+    fb.textContent = "Wrong — back to the base of this station.";
+    nextBtn.textContent = "Restart station";
     nextBtn.dataset.mode = "restart";
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / cur.questions.length * 100) + "%";
@@ -213,7 +216,7 @@ function endScreen() {
   document.getElementById("progress").textContent = "";
   document.getElementById("title").textContent = "Quiz Climber";
   img.classList.add("hidden");
-  document.getElementById("question").innerHTML = `<h2>You reached the top! Final score: ${score}</h2>`;
+  document.getElementById("question").innerHTML = `<h2>The summit is reached. Final score: ${score}</h2>`;
   document.getElementById("options").innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
