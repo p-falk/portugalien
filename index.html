@@ -103,7 +103,7 @@ const questions = [
   { q: "I vilken kommun ligger Skived?", options: ["Karlstad", "Forshaga", "Kil"], answer: 1 },
   { q: "Vilken älv flyter förbi Skived?", options: ["Klarälven", "Göta älv", "Dalälven"], answer: 0 },
   { q: "Skived hade en gång ett hockeylag som hette Skiveds IF? På vilken plats spelades deras hemmamatcher", options: ["På skolan grusplan", "Åsens lekpark", "På älven"], answer: 1 },
-  { q: "Vad heter Skivedskolans nuvarande Rektor?", options: ["Per Lawén, "Mikael Rönn", "Kenta Kofot"], answer: 2 }
+  { q: "Vad heter Skivedskolans nuvarande Rektor?", options: ["Per Lawén", "Mikael Rönn", "Kenta Kofot"], answer: 2 }
 ];
 
 const kodord = ["DALSENTRAS", "BASLÄGER", "SKOGSLINJE", "SNÖLINJE", "SUMMIT"];
@@ -137,7 +137,7 @@ function showQuestion() {
   const q = questions[questionIndex];
   const total = questions.length;
 
-  document.getElementById("title").textContent = "Quiz Climber";
+  document.getElementById("title").textContent = "Skrämd i Skived";
   img.src = q.image || "images/mountain.jpg";
   img.classList.remove("hidden");
 
@@ -191,7 +191,7 @@ nextBtn.onclick = () => {
 function endScreen() {
   document.getElementById("barFill").style.width = "100%";
   document.getElementById("progress").textContent = "";
-  document.getElementById("title").textContent = "Quiz Climber";
+  document.getElementById("title").textContent = "Skrämd i Skived";
   img.classList.add("hidden");
   document.getElementById("options").innerHTML = "";
   document.getElementById("feedback").textContent = "";
