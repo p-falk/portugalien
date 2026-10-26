@@ -183,8 +183,8 @@ function answer(correct, btn) {
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  // linger one second, then advance to the next question either way
-  autoTimer = setTimeout(() => nextBtn.click(), 1000);
+  // linger three seconds, then advance to the next question either way
+  autoTimer = setTimeout(() => nextBtn.click(), 3000);
 }
 
 nextBtn.onclick = () => {
