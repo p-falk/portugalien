@@ -241,7 +241,8 @@ document.addEventListener("keydown", e => {
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
-      const btn = visible.querySelector("button:not(.hidden)");
+      // skip answer buttons so Enter/Space never pick option 1
+      const btn = visible.querySelector("button:not(.hidden):not(#options button)");
       if (btn && !btn.disabled) btn.click();
     }
     return;
