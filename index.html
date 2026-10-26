@@ -199,10 +199,21 @@ function endScreen() {
   document.getElementById("progress").textContent = "";
   document.getElementById("title").textContent = "Quiz Climber";
   img.classList.add("hidden");
-  document.getElementById("question").innerHTML = `<h2>The summit is reached. Final score: ${score}</h2>`;
   document.getElementById("options").innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
+
+  // different end screens depending on the score
+  const total = questions.length;
+  let verdict;
+  if (score === total)      verdict = "A flawless ascent! You planted the flag on the summit itself. A true mountaineer of the mind.";
+  else if (score === 3)     verdict = "A strong climb! You crossed the snow line and stood just below the summit, gazing at the stars.";
+  else if (score === 2)     verdict = "A steady hike. You made it past the treeline — the mountain is impressed, even if the moon is not.";
+  else if (score === 1)     verdict = "A modest stroll from base camp. Pack better provisions and try the climb again.";
+  else                       verdict = "You never left the valley. The expedition committee suggests another attempt — the mountain isn't going anywhere.";
+
+  document.getElementById("question").innerHTML =
+    `<h2>The climb is over. Final score: ${score} of ${total}</h2><p>${verdict}</p>`;
   animate();
 }
 
