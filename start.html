@@ -4,24 +4,48 @@
 <meta charset="UTF-8">
 <title>Quiz Climber</title>
 <style>
-  body { font-family: sans-serif; background: #1e2a3a; color: #fff; display: flex;
-         justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-  .card { background: #2c3e50; padding: 2rem 2.5rem; border-radius: 12px; width: 90%;
-          max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
-  h1 { margin-top: 0; }
-  button { display: block; width: 100%; margin: 8px 0; padding: 12px; font-size: 1rem;
-           border: none; border-radius: 8px; background: #3498db; color: #fff; cursor: pointer; }
-  button:hover { background: #2980b9; }
-  button.correct { background: #27ae60; }
-  button.wrong { background: #c0392b; }
-  .hidden { display: none; }
-  .progress { font-size: .9rem; opacity: .8; margin-bottom: 1rem; }
-  .feedback { min-height: 1.5rem; font-weight: bold; }
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+
+body { font-family: 'Nunito', sans-serif;
+       background: linear-gradient(160deg, #1e3c72, #2a5298);
+       color: #fff; display: flex; justify-content: center; align-items: center;
+       min-height: 100vh; margin: 0; }
+
+.card { background: rgba(255,255,255,.08);
+         backdrop-filter: blur(10px);
+         border: 1px solid rgba(255,255,255,.15);
+         padding: 2rem 2.5rem; border-radius: 16px; width: 90%;
+         max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+h1 { margin-top: 0; font-weight: 800; }
+
+.progress-bar { height: 8px; background: rgba(255,255,255,.15);
+                border-radius: 4px; overflow: hidden; margin-bottom: .5rem; }
+.progress-bar-fill { height: 100%; width: 0%; background: #38ef7d;
+                     border-radius: 4px; transition: width .4s ease; }
+.progress { font-size: .9rem; opacity: .85; margin-bottom: 1rem; }
+
+button { display: block; width: 100%; margin: 8px 0; padding: 12px;
+          font-size: 1rem; font-family: inherit; font-weight: 700;
+          border: none; border-radius: 10px; background: #3498db; color: #fff;
+          cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; }
+button:hover:not(:disabled) { transform: translateY(-2px);
+                               box-shadow: 0 6px 14px rgba(0,0,0,.35); }
+button:disabled { opacity: .55; cursor: default; }
+button.correct { background: #27ae60; }
+button.wrong { background: #c0392b; }
+
+.feedback { min-height: 1.5rem; font-weight: 800; }
+.hidden { display: none; }
+
+.fade-in { animation: pop .35s ease; }
+@keyframes pop { from { opacity: 0; transform: scale(.95); } }
 </style>
 </head>
 <body>
 <div class="card">
-  <h1>🏔️ Quiz Climber</h1>
+  <h1 id="title">🏔️ Quiz Climber</h1>
+  <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
   <div id="progress" class="progress"></div>
   <div id="question"></div>
   <div id="options"></div>
@@ -31,72 +55,90 @@
 
 <script>
 const levels = [
-  [ // Level 1
+  { emoji: "🏔️", questions: [
     { q: "What is 7 × 8?", options: ["54", "56", "64"], answer: 1 },
     { q: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury"], answer: 2 },
     { q: "What color do you get mixing blue and yellow?", options: ["Green", "Purple", "Orange"], answer: 0 }
-  ],
-  [ // Level 2
+  ]},
+  { emoji: "🌋", questions: [
     { q: "What is the capital of Japan?", options: ["Osaka", "Kyoto", "Tokyo"], answer: 2 },
     { q: "How many continents are there?", options: ["5", "6", "7"], answer: 2 },
     { q: "Which language runs in a web browser?", options: ["Python", "JavaScript", "C++"], answer: 1 }
-  ],
-  [ // Level 3
+  ]},
+  { emoji: "🚀", questions: [
     { q: "What does HTML stand for?", options: ["HyperText Markup Language", "HighText Machine Language", "Hyperlink Text Mode Language"], answer: 0 },
     { q: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
     { q: "What year did the first man walk on the Moon?", options: ["1969", "1972", "1965"], answer: 0 }
-  ]
+  ]}
 ];
 
 let level = parseInt(localStorage.getItem("quizLevel")) || 0;
+if (level >= levels.length) { level = 0; localStorage.removeItem("quizLevel"); }
 let questionIndex = 0;
 let score = 0;
 const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+
+function animate() {
+  card.classList.remove("fade-in");
+  void card.offsetWidth; // restart the animation
+  card.classList.add("fade-in");
+}
 
 function showQuestion() {
-  const q = levels[level][questionIndex];
+  const cur = levels[level];
+  const q = cur.questions[questionIndex];
+  const total = cur.questions.length;
+
+  document.getElementById("title").textContent = `${cur.emoji} Quiz Climber`;
+  document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
-    `Level ${level + 1} of ${levels.length} — Question ${questionIndex + 1}/${levels[level].length} — Score: ${score}`;
+    `Level ${level + 1} of ${levels.length} — Question ${questionIndex + 1}/${total} — Score: ${score}`;
   document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
   const box = document.getElementById("options");
   box.innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
   nextBtn.textContent = "Continue";
+  nextBtn.dataset.mode = "next";
 
+  const letters = ["A", "B", "C", "D"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
-    btn.textContent = opt;
+    btn.textContent = `${letters[i]}. ${opt}`;
     btn.onclick = () => answer(i === q.answer, btn);
     box.appendChild(btn);
   });
+
+  animate();
 }
 
 function answer(correct, btn) {
   document.querySelectorAll("#options button").forEach(b => b.disabled = true);
   const fb = document.getElementById("feedback");
+  const cur = levels[level];
   if (correct) {
     score++;
     btn.classList.add("correct");
     fb.textContent = "✅ Correct!";
-    nextBtn.textContent = "Continue";
     nextBtn.dataset.mode = "next";
   } else {
     btn.classList.add("wrong");
-    document.querySelectorAll("#options button")[levels[level][questionIndex].answer].classList.add("correct");
+    document.querySelectorAll("#options button")[cur.questions[questionIndex].answer].classList.add("correct");
     fb.textContent = "❌ Wrong — back to the start of this level!";
     nextBtn.textContent = "Restart level";
     nextBtn.dataset.mode = "restart";
   }
+  document.getElementById("barFill").style.width = ((questionIndex + 1) / cur.questions.length * 100) + "%";
   nextBtn.classList.remove("hidden");
 }
 
 nextBtn.onclick = () => {
   if (nextBtn.dataset.mode === "restart") {
-    questionIndex = 0;          // back to the first question of the level
+    questionIndex = 0;
   } else {
     questionIndex++;
-    if (questionIndex >= levels[level].length) {
+    if (questionIndex >= levels[level].questions.length) {
       level++;
       questionIndex = 0;
       localStorage.setItem("quizLevel", level);
@@ -107,12 +149,15 @@ nextBtn.onclick = () => {
 };
 
 function endScreen() {
+  document.getElementById("barFill").style.width = "100%";
   document.getElementById("progress").textContent = "";
-  document.getElementById("question").innerHTML = "<h2>🎉 You reached the top! Final score: " + score + "</h2>";
+  document.getElementById("title").textContent = "🎉 Quiz Climber";
+  document.getElementById("question").innerHTML = `<h2>You reached the top! Final score: ${score}</h2>`;
   document.getElementById("options").innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
   localStorage.removeItem("quizLevel");
+  animate();
 }
 
 showQuestion();
