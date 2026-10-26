@@ -197,7 +197,13 @@ function answer(correct, btn) {
     nextBtn.dataset.mode = "restart";
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / cur.questions.length * 100) + "%";
-  nextBtn.classList.remove("hidden");
+
+  if (correct) {
+    // auto-advance after a short pause so the green flash is visible
+    setTimeout(() => nextBtn.click(), 1400);
+  } else {
+    nextBtn.classList.remove("hidden");
+  }
 }
 
 nextBtn.onclick = () => {
