@@ -85,7 +85,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   <!-- Page 2: Instructions -->
   <div id="page2" class="intro hidden">
     <h1>One rule</h1>
-    <p>A <b>wrong answer costs you the attempt, but you get another chance</b> — the question stays until you conquer it.
+    <p>There is <b>no penalty for a wrong answer</b> — the climb goes on regardless, and the correct answer is shown.
        The score keeps a record of everything earned on the way up.</p>
     <button id="instrBtn2">Onward</button>
   </div>
@@ -176,21 +176,15 @@ function answer(correct, btn) {
     score++;
     btn.classList.add("correct");
     fb.textContent = "Correct — altitude gained.";
-    document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
-    // auto-advance after a short pause so the green flash is visible
-    autoTimer = setTimeout(() => nextBtn.click(), 1400);
   } else {
     btn.classList.add("wrong");
-    fb.textContent = "Wrong — another chance. Try again.";
-    // re-enable the buttons for another attempt after a short pause
-    autoTimer = setTimeout(() => {
-      document.querySelectorAll("#options button").forEach(b => {
-        b.disabled = false;
-        b.classList.remove("wrong");
-      });
-      fb.textContent = "";
-    }, 1400);
+    document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
+    fb.textContent = "Wrong — the correct answer is shown.";
   }
+  document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
+
+  // linger one second, then advance to the next question either way
+  autoTimer = setTimeout(() => nextBtn.click(), 1000);
 }
 
 nextBtn.onclick = () => {
