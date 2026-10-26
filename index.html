@@ -68,25 +68,25 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 <div class="card">
 
   <div id="page0" class="intro">
-    <h1>Quiz Climber</h1>
-    <p style="text-align:center">Fältlogg från en expedition genom Skived i Forshaga kommun. Ett rätt svar i taget.</p>
-    <button id="startBtn">Påbörja klättringen</button>
+    <h1>Skrämd i Skived...</h1>
+    <p style="text-align:center">Familjen här i huset har mystiskt försvunnit. Men någonstans i trädgården har den (eller det) som tog dem gömt godis .</p>
+    <button id="startBtn">Fortsätt</button>
   </div>
 
   <div id="page1" class="intro hidden">
-    <h1>Så fungerar det</h1>
-    <p>Fyra frågor står mellan dig och toppen. Svara rätt för att gain höjd.</p>
+    <h1>Svara på frågor</h1>
+    <p>Du kommer nu att få fyra frågor. För varje rätt svar kommer du få en ledtråd som leder dig till godisgömman här på gården</p>
     <button id="instrBtn1">Nästa</button>
   </div>
 
   <div id="page2" class="intro hidden">
-    <h1>En regel</h1>
-    <p>Det finns <b>inget straff för fel svar</b> — klättringen fortsätter ändå och rätt svar visas. Poängen antecknas på vägen upp.</p>
+    <h1>Och just det...</h1>
+    <p>För varje fel svar blir kartan som leder till till godiset sämre. Får du alla fel blir det inget godis och <b>kommer jag att hemsöka dig inatt</b>.</p>
     <button id="instrBtn2">Framåt</button>
   </div>
 
   <div id="page3" class="hidden">
-    <h1 id="title">Quiz Climber</h1>
+    <h1 id="title">Skrämd i Skived</h1>
     <img id="levelImg" class="level-img" alt="">
     <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
     <div id="progress" class="progress"></div>
@@ -102,8 +102,8 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 const questions = [
   { q: "I vilken kommun ligger Skived?", options: ["Karlstad", "Forshaga", "Kil"], answer: 1 },
   { q: "Vilken älv flyter förbi Skived?", options: ["Klarälven", "Göta älv", "Dalälven"], answer: 0 },
-  { q: "I vilken århundrade nämns Skived i skriftliga källor för första gången (år 1334)?", options: ["1200-talet", "1300-talet", "1400-talet"], answer: 1 },
-  { q: "Vad fanns det tidigare på Skivedsidan?", options: ["En gruva", "En kyrka", "En stor jordbruksfastighet"], answer: 2 }
+  { q: "Skived hade en gång ett hockeylag som hette Skiveds IF? På vilken plats spelades deras hemmamatcher", options: ["På skolan grusplan", "Åsens lekpark", "På älven"], answer: 1 },
+  { q: "Vad heter Skivedskolans nuvarande Rektor?", options: ["Per Lawén, "Mikael Rönn", "Kenta Kofot"], answer: 2 }
 ];
 
 const kodord = ["DALSENTRAS", "BASLÄGER", "SKOGSLINJE", "SNÖLINJE", "SUMMIT"];
@@ -199,11 +199,11 @@ function endScreen() {
 
   const total = questions.length;
   let verdict;
-  if (score === total)      verdict = "En felfri bestigning! Du planterade flaggan på själva toppen.";
-  else if (score === 3)     verdict = "En stark klättring! Du stod strax under toppen och blickade mot stjärnorna.";
-  else if (score === 2)     verdict = "En stadig vandring. Du kom förbi trädgränsen — berget är imponerat.";
-  else if (score === 1)     verdict = "En kort promenad från baslägret. Packa bättre och försök igen.";
-  else                       verdict = "Du lämnade aldrig dalen. Expeditionskommittén föreslår ett nytt försök.";
+  if (score === total)      verdict = "Bra jobbat! Godiset finns inne trädet. Kom ihåg att lämna något till andra";
+  else if (score === 3)     verdict = "Ganska bra. Godiset du söker finns i något som bär frukt... , ";
+  else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Godiet finns gömt på trädgårdens norra sida";
+  else if (score === 1)     verdict = "Urdåligt. Du får vänta 2 minuter på att jag laddar om och testa att svara igen";
+  else                       verdict = "Du suger. Inatt kommer jag och hemsöker dig av bara fan!";
 
   document.getElementById("question").innerHTML =
     `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
