@@ -168,7 +168,7 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "Rätt — höjd gainad.";
+    fb.textContent = "Rätt — Ett godispoäng!.";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
