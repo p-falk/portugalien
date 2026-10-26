@@ -64,19 +64,25 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
   <div id="page0" class="intro">
     <h1>Skived eller godis...</h1>
-    <p style="text-align:center">Familjen här i huset har mystiskt försvunnit. Men någonstans i trädgården har den (eller det) som tog dem gömt godis .</p>
+    <p style="text-align:center">Gillar du godis? Här räcker det inte med att komma utklädd - man måste svara rätt på frågor också.</p>
     <button id="startBtn">Fortsätt</button>
   </div>
 
   <div id="page1" class="intro hidden">
-    <h1>Vill du hitta godiset? Svara på frågor</h1>
-    <p>Du kommer nu att få fyra frågor om Skived. För varje rätt svar kommer du få en ledtråd som leder dig till godisgömman här på gården</p>
+    <h1>Varje rätt svar ger dig bättre godis</h1>
+    <p>Du kommer nu att få fyra frågor om Skived. För varje rätt svar kommer du få ett poäng. </p>
+    <p> 4 poäng =  superbra godispåse. </p>
+    <p> 3 poäng =  En helt OK chokladbit. </p>
+    <p> 2 poäng =  En rätt tråkig klubba. </p>
+    <p> 1 poäng =  Ett äpple </p>
+     <p> 0 poäng = En gammal morot (och du blir hemsökt inatt)</p>
+         
     <button id="instrBtn1">Nästa</button>
   </div>
 
   <div id="page2" class="intro hidden">
-    <h1>Svara fel och det blir svårare</h1>
-    <p>För varje fel svar blir kartan som leder till till godiset sämre. Får du alla fel blir det inget godis och <b>att bryta mig in hos dig inatt och föra bort dig på samma sätt som jag fört bort familjen i det här huset</b>.</p>
+    <h1>Olika poäng - olika kodord</h1>
+    <p>När du svarat på alla frågor kommer du få ett kodord. Ring på klockan här på trappen och uppge ditt kodord. Då får du det godiset du förtjänat</b>.</p>
     <button id="instrBtn2">Framåt</button>
   </div>
 
@@ -94,10 +100,10 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 <script>
 const questions = [
-  { q: "I vilken kommun ligger Skived?", options: ["Karlstad", "Forshaga", "Kil"], answer: 1 },
-  { q: "Vilken älv flyter förbi Skived?", options: ["Klarälven", "Göta älv", "Dalälven"], answer: 0 },
-  { q: "Skived hade en gång ett hockeylag som hette Skiveds IF? På vilken plats spelades deras hemmamatcher", options: ["På skolan grusplan", "Åsens lekpark", "På älven"], answer: 1 },
-  { q: "Vad heter Skivedskolans nuvarande Rektor?", options: ["Per Lawén", "Mikael Rönn", "Kenta Kofot"], answer: 2 }
+  { q: "Vilken frukt är en klassisk Halloween-symbol och ska skäras ut med ett ansikte?", options: ["Äpple", "Pumpa", "Melon"], answer: 1 },
+  { q: "Vilket land har Halloween sitt ursprung i?", options: ["USA", "Irland", "Tyskland"], answer: 1 },
+  { q: "Gustava Elisabeth Pettersson från Skived var en märklig som på tidigt 1900-tal sägs ha vandrat Skived runt med en tom barnvagn. Idag sägs hon kunna ses som spöke på olika platser. Vad hade hon för smeknamn?", options: ["Bergsgumman", "Kokla", "Vagnkärringen"], answer: 1 },
+  { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Janina Falk", "Caligula", "Kenta Kofot"], answer: 0 }
 ];
 
 const kodord = ["DALSENTRAS", "BASLÄGER", "SKOGSLINJE", "SNÖLINJE", "SUMMIT"];
@@ -189,11 +195,11 @@ function endScreen() {
 
   const total = questions.length;
   let verdict;
-  if (score === total)      verdict = "Bra jobbat! Godiset finns inne trädet. Kom ihåg att lämna något till andra";
-  else if (score === 3)     verdict = "Ganska bra. Godiset du söker finns i något som bär frukt... , ";
-  else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Godiet finns gömt på trädgårdens norra sida";
-  else if (score === 1)     verdict = "Urdåligt. Du får vänta 2 minuter på att jag laddar om och testa att svara igen";
-  else                       verdict = "Du suger. Inatt kommer jag och hemsöka dig av bara fan!";
+  if (score === total)      verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg kodordet RÖVTROLL!";
+  else if (score === 3)     verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet BAJSRULLTÅRTA! ";
+  else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan, och när de öppnar säg kodordet SNOR ÄR GOTT!";
+  else if (score === 1)     verdict = "Urdåligt. Tryck på ringklockan, och när de öppnar säg kodordet GOD MORGON!";
+  else                       verdict = "Inga rätt...Tryck på ringklockan, och när de öppnar säg kodordet GOD JUL!";
 
   document.getElementById("question").innerHTML =
     `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
