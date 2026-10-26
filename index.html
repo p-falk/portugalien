@@ -92,4 +92,170 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
   <!-- Page 3: The game -->
   <div id="page3" class="hidden">
-    <h1 id="title">
+    <h1 id="title">Quiz Climber</h1>
+    <img id="levelImg" class="level-img" alt="">
+    <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
+    <div id="progress" class="progress"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="hidden">Continue</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  { q: "What is 7 × 8?", options: ["54", "56", "64"], answer: 1 },
+  { q: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury"], answer: 2 },
+  { q: "What color do you get mixing blue and yellow?", options: ["Green", "Purple", "Orange"], answer: 0 },
+  { q: "What year did the first man walk on the Moon?", options: ["1969", "1972", "1965"], answer: 0 }
+];
+
+const pages = ["page0", "page1", "page2", "page3"];
+
+let questionIndex = 0;
+let score = 0;
+let autoTimer = null; // pending auto-advance timeout
+const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+const img = document.getElementById("levelImg");
+
+function animate() {
+  card.classList.remove("fade-in");
+  void card.offsetWidth; // restart the animation
+  card.classList.add("fade-in");
+}
+
+function showPage(n) {
+  pages.forEach((id, i) =>
+    document.getElementById(id).classList.toggle("hidden", i !== n));
+  animate();
+}
+
+// Intro / instruction buttons: each advances one page
+document.getElementById("startBtn").onclick  = () => showPage(1);
+document.getElementById("instrBtn1").onclick = () => showPage(2);
+document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
+
+function showQuestion() {
+  const q = questions[questionIndex];
+  const total = questions.length;
+
+  document.getElementById("title").textContent = "Quiz Climber";
+  img.src = q.image || "images/mountain.jpg";
+  img.classList.remove("hidden");
+
+  document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
+  document.getElementById("progress").textContent =
+    `Question ${questionIndex + 1} of ${total} — Score: ${score}`;
+  document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
+  const box = document.getElementById("options");
+  box.innerHTML = "";
+  document.getElementById("feedback").textContent = "";
+  nextBtn.classList.add("hidden");
+  nextBtn.textContent = "Continue";
+  nextBtn.dataset.mode = "next";
+
+  const letters = ["1", "2", "3", "4"];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = `${letters[i]}. ${opt}`;
+    btn.onclick = () => answer(i === q.answer, btn);
+    box.appendChild(btn);
+  });
+
+  animate();
+}
+
+function answer(correct, btn) {
+  document.querySelectorAll("#options button").forEach(b => b.disabled = true);
+  const fb = document.getElementById("feedback");
+
+  if (correct) {
+    score++;
+    btn.classList.add("correct");
+    fb.textContent = "Correct — altitude gained.";
+    document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
+    // auto-advance after a short pause so the green flash is visible
+    autoTimer = setTimeout(() => nextBtn.click(), 1400);
+  } else {
+    btn.classList.add("wrong");
+    fb.textContent = "Wrong — another chance. Try again.";
+    // re-enable the buttons for another attempt after a short pause
+    autoTimer = setTimeout(() => {
+      document.querySelectorAll("#options button").forEach(b => {
+        b.disabled = false;
+        b.classList.remove("wrong");
+      });
+      fb.textContent = "";
+    }, 1400);
+  }
+}
+
+nextBtn.onclick = () => {
+  clearTimeout(autoTimer);
+  questionIndex++;
+  if (questionIndex >= questions.length) return endScreen();
+  showQuestion();
+};
+
+function endScreen() {
+  document.getElementById("barFill").style.width = "100%";
+  document.getElementById("progress").textContent = "";
+  document.getElementById("title").textContent = "Quiz Climber";
+  img.classList.add("hidden");
+  document.getElementById("question").innerHTML = `<h2>The summit is reached. Final score: ${score}</h2>`;
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("feedback").textContent = "";
+  nextBtn.classList.add("hidden");
+  animate();
+}
+
+// --- inactivity reset: back to intro after 120 s without interaction ---
+let idleTimer = null;
+
+function resetGame() {
+  clearTimeout(autoTimer);
+  questionIndex = 0;
+  score = 0;
+  document.getElementById("barFill").style.width = "0%";
+  showPage(0);
+}
+
+function bumpIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(resetGame, 120000); // 120 seconds
+}
+
+document.addEventListener("click", bumpIdle);
+document.addEventListener("keydown", bumpIdle);
+bumpIdle(); // start the timer when the page loads
+
+// --- keyboard shortcuts: A / G / L pick answers, Enter or Space drives the page button ---
+document.addEventListener("keydown", e => {
+  const key = e.key.toLowerCase();
+
+  if (key === "enter" || key === " " || e.code === "Space") {
+    e.preventDefault(); // stop Space from scrolling the page
+    const visible = [...document.querySelectorAll("div[id^='page']")]
+      .find(d => !d.classList.contains("hidden"));
+    if (visible) {
+      const btn = visible.querySelector("button:not(.hidden)");
+      if (btn && !btn.disabled) btn.click();
+    }
+    return;
+  }
+
+  const map = { "a": 0, "g": 1, "l": 2 };
+  const idx = map[key];
+  if (idx !== undefined) {
+    const opts = [...document.querySelectorAll("#options button")];
+    if (opts[idx] && !opts[idx].disabled) opts[idx].click();
+  }
+});
+
+showPage(0); // start on the intro
+</script>
+</body>
+</html>
