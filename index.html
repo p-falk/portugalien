@@ -26,11 +26,6 @@ body::before { content: ""; position: fixed; inset: 0;
 h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px; }
 h2 { font-weight: 400; }
 
-.level-img { width: 100%; height: 160px; object-fit: cover;
-             border-radius: 2px; margin-bottom: 1rem;
-             border: 1px solid #b8ad93;
-             filter: sepia(.3) contrast(.95); }
-
 .progress-bar { height: 8px; background: rgba(43, 36, 28, .15);
                 border-radius: 2px; overflow: hidden; margin-bottom: .5rem; }
 .progress-bar-fill { height: 100%; width: 0%; background: #5a6e37;
@@ -68,26 +63,25 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 <div class="card">
 
   <div id="page0" class="intro">
-    <h1>Skrämd i Skived...</h1>
+    <h1>Skived eller godis...</h1>
     <p style="text-align:center">Familjen här i huset har mystiskt försvunnit. Men någonstans i trädgården har den (eller det) som tog dem gömt godis .</p>
     <button id="startBtn">Fortsätt</button>
   </div>
 
   <div id="page1" class="intro hidden">
-    <h1>Svara på frågor</h1>
-    <p>Du kommer nu att få fyra frågor. För varje rätt svar kommer du få en ledtråd som leder dig till godisgömman här på gården</p>
+    <h1>Vill du hitta godiset? Svara på frågor</h1>
+    <p>Du kommer nu att få fyra frågor om Skived. För varje rätt svar kommer du få en ledtråd som leder dig till godisgömman här på gården</p>
     <button id="instrBtn1">Nästa</button>
   </div>
 
   <div id="page2" class="intro hidden">
-    <h1>Och just det...</h1>
-    <p>För varje fel svar blir kartan som leder till till godiset sämre. Får du alla fel blir det inget godis och <b>kommer jag att hemsöka dig inatt</b>.</p>
+    <h1>Svara fel och det blir svårare</h1>
+    <p>För varje fel svar blir kartan som leder till till godiset sämre. Får du alla fel blir det inget godis och <b>att bryta mig in hos dig inatt och föra bort dig på samma sätt som jag fört bort familjen i det här huset</b>.</p>
     <button id="instrBtn2">Framåt</button>
   </div>
 
   <div id="page3" class="hidden">
     <h1 id="title">Skrämd i Skived</h1>
-    <img id="levelImg" class="level-img" alt="">
     <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
     <div id="progress" class="progress"></div>
     <div id="question"></div>
@@ -115,7 +109,6 @@ let score = 0;
 let autoTimer = null;
 const nextBtn = document.getElementById("nextBtn");
 const card = document.querySelector(".card");
-const img = document.getElementById("levelImg");
 
 function animate() {
   card.classList.remove("fade-in");
@@ -138,8 +131,6 @@ function showQuestion() {
   const total = questions.length;
 
   document.getElementById("title").textContent = "Skrämd i Skived";
-  img.src = q.image || "images/mountain.jpg";
-  img.classList.remove("hidden");
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
@@ -192,7 +183,6 @@ function endScreen() {
   document.getElementById("barFill").style.width = "100%";
   document.getElementById("progress").textContent = "";
   document.getElementById("title").textContent = "Skrämd i Skived";
-  img.classList.add("hidden");
   document.getElementById("options").innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
@@ -203,7 +193,7 @@ function endScreen() {
   else if (score === 3)     verdict = "Ganska bra. Godiset du söker finns i något som bär frukt... , ";
   else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Godiet finns gömt på trädgårdens norra sida";
   else if (score === 1)     verdict = "Urdåligt. Du får vänta 2 minuter på att jag laddar om och testa att svara igen";
-  else                       verdict = "Du suger. Inatt kommer jag och hemsöker dig av bara fan!";
+  else                       verdict = "Du suger. Inatt kommer jag och hemsöka dig av bara fan!";
 
   document.getElementById("question").innerHTML =
     `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
