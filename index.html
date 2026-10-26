@@ -203,7 +203,7 @@ function endScreen() {
   else                       verdict = "Inga rätt...Tryck på ringklockan, och när de öppnar säg kodordet nedan";
 
   document.getElementById("question").innerHTML =
-    `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
+    `<h2>. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
     `<p style="text-align:center; margin-top:1rem;">Ditt kodord är:</p>` +
     `<div class="kodord">${kodord[score]}</div>`;
   animate();
