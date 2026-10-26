@@ -51,6 +51,10 @@ button:disabled { opacity: .5; cursor: default; }
 button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
 button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
+/* answer buttons side by side */
+#options { display: flex; flex-wrap: wrap; gap: 8px; }
+#options button { flex: 1 1 30%; margin: 8px 0 0; white-space: nowrap; }
+
 .feedback { min-height: 1.5rem; }
 .hidden { display: none; }
 
@@ -165,7 +169,7 @@ function showQuestion() {
   nextBtn.textContent = "Continue";
   nextBtn.dataset.mode = "next";
 
-  const letters = ["A", "B", "C", "D"];
+  const letters = ["1", "2", "3", "4"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.textContent = `${letters[i]}. ${opt}`;
@@ -223,6 +227,28 @@ function endScreen() {
   localStorage.removeItem("quizLevel");
   animate();
 }
+
+// --- keyboard shortcuts: A / G / L pick answers, Enter drives the page button ---
+document.addEventListener("keydown", e => {
+  const key = e.key.toLowerCase();
+
+  if (key === "enter") {
+    const visible = [...document.querySelectorAll("div[id^='page']")]
+      .find(d => !d.classList.contains("hidden"));
+    if (visible) {
+      const btn = visible.querySelector("button:not(.hidden)");
+      if (btn && !btn.disabled) btn.click();
+    }
+    return;
+  }
+
+  const map = { "a": 0, "g": 1, "l": 2 };
+  const idx = map[key];
+  if (idx !== undefined) {
+    const opts = [...document.querySelectorAll("#options button")];
+    if (opts[idx] && !opts[idx].disabled) opts[idx].click();
+  }
+});
 
 showPage(0); // start on the intro
 </script>
