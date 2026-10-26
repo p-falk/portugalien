@@ -109,7 +109,7 @@ const questions = [
   { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Janina Falk", "Caligula", "Kenta Kofot"], answer: 0 }
 ];
 
-const kodord = ["DALSENTRAS", "BASLÄGER", "SKOGSLINJE", "SNÖLINJE", "SUMMIT"];
+const kodord = ["GOD JUL", "GOD MORGON", "GLAD PÅSK", "JAG HAR SKITIT I GRUSGÅNGEN", "RÖVTROLL"];
 
 const pages = ["page0", "page1", "page2", "page3"];
 
@@ -198,11 +198,11 @@ function endScreen() {
 
   const total = questions.length;
   let verdict;
-  if (score === total)      verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg kodordet RÖVTROLL!";
-  else if (score === 3)     verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet BAJSRULLTÅRTA! ";
-  else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan, och när de öppnar säg kodordet SNOR ÄR GOTT!";
-  else if (score === 1)     verdict = "Urdåligt. Tryck på ringklockan, och när de öppnar säg kodordet GOD MORGON!";
-  else                       verdict = "Inga rätt...Tryck på ringklockan, och när de öppnar säg kodordet GOD JUL!";
+  if (score === total)      verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg kodordet nedan";
+  else if (score === 3)     verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet nedan ";
+  else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
+  else if (score === 1)     verdict = "Urdåligt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
+  else                       verdict = "Inga rätt...Tryck på ringklockan, och när de öppnar säg kodordet nedan";
 
   document.getElementById("question").innerHTML =
     `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
