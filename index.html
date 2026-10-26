@@ -228,11 +228,12 @@ function endScreen() {
   animate();
 }
 
-// --- keyboard shortcuts: A / G / L pick answers, Enter drives the page button ---
+// --- keyboard shortcuts: A / G / L pick answers, Enter or Space drives the page button ---
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
 
-  if (key === "enter") {
+  if (key === "enter" || key === " " || e.code === "Space") {
+    e.preventDefault(); // stop Space from scrolling the page
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
