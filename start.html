@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Climber</title>
+<style>
+  body { font-family: sans-serif; background: #1e2a3a; color: #fff; display: flex;
+         justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+  .card { background: #2c3e50; padding: 2rem 2.5rem; border-radius: 12px; width: 90%;
+          max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  h1 { margin-top: 0; }
+  button { display: block; width: 100%; margin: 8px 0; padding: 12px; font-size: 1rem;
+           border: none; border-radius: 8px; background: #3498db; color: #fff; cursor: pointer; }
+  button:hover { background: #2980b9; }
+  button.correct { background: #27ae60; }
+  button.wrong { background: #c0392b; }
+  .hidden { display: none; }
+  .progress { font-size: .9rem; opacity: .8; margin-bottom: 1rem; }
+  .feedback { min-height: 1.5rem; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🏔️ Quiz Climber</h1>
+  <div id="progress" class="progress"></div>
+  <div id="question"></div>
+  <div id="options"></div>
+  <div id="feedback" class="feedback"></div>
+  <button id="nextBtn" class="hidden">Continue</button>
+</div>
+
+<script>
+// Add levels/questions here — nothing else needs changing
+const levels = [
+  [ // Level 1
+    { q: "What is 7 × 8?", options: ["54", "56", "64"], answer: 1 },
+    { q: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury"], answer: 2 },
+    { q: "What color do you get mixing blue and yellow?", options: ["Green", "Purple", "Orange"], answer: 0 }
+  ],
+  [ // Level 2
+    { q: "What is the capital of Japan?", options: ["Osaka", "Kyoto", "Tokyo"], answer: 2 },
+    { q: "How many continents are there?", options: ["5", "6", "7"], answer: 2 },
+    { q: "Which language runs in a web browser?", options: ["Python", "JavaScript", "C++"], answer: 1 }
+  ],
+  [ // Level 3
+    { q: "What does HTML stand for?", options: ["HyperText Markup Language", "HighText Machine Language", "Hyperlink Text Mode Language"], answer: 0 },
+    { q: "What is the largest ocean?", options: ["Atlantic", "Indian", "Pacific"], answer: 2 },
+    { q: "What year did the first man walk on the Moon?", options: ["1969", "1972", "1965"], answer: 0 }
+  ]
+];
+
+let level = parseInt(localStorage.getItem("quizLevel")) || 0;
+let questionIndex = 0;
+let score = 0;
+
+function showQuestion() {
+  const q = levels[level][questionIndex];
+  document.getElementById("progress").textContent =
+    `Level ${level + 1} of ${levels.length} — Question ${questionIndex + 1}/${levels[level].length} — Score: ${score}`;
+  document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
+  const box = document.getElementById("options");
+  box.innerHTML = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => answer(i === q.answer, btn);
+    box.appendChild(btn);
+  });
+}
+
+function answer(correct, btn) {
+  const buttons = document.querySelectorAll("#options button");
+  buttons.forEach(b => b.disabled = true);
+  const fb = document.getElementById("feedback");
+  if (correct) {
+    score++;
+    btn.classList.add("correct");
+    fb.textContent = "✅ Correct!";
+  } else {
+    btn.classList.add("wrong");
+    buttons[levels[level][questionIndex].answer].classList.add("correct");
+    fb.textContent = "❌ Wrong one!";
+  }
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+document.getElementById("nextBtn").onclick = () => {
+  questionIndex++;
+  if (questionIndex >= levels[level].length) {
+    level++;
+    questionIndex = 0;
+    localStorage.setItem("quizLevel", level); // progress saved
+    if (level >= levels.length) return endScreen();
+  }
+  showQuestion();
+};
+
+function endScreen() {
+  document.getElementById("progress").textContent = "";
+  document.getElementById("question").innerHTML = "<h2>🎉 You reached the top! Final score: " + score + "</h2>";
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+  localStorage.removeItem("quizLevel");
+}
+
+showQuestion();
+</script>
+</body>
+</html>
