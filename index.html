@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
 <meta charset="UTF-8">
 <title>Quiz Climber</title>
@@ -12,7 +12,6 @@ body { font-family: 'Special Elite', 'Courier New', monospace;
        color: #2b241c; display: flex; justify-content: center; align-items: center;
        min-height: 100vh; margin: 0; }
 
-/* dark overlay so the page still reads dark around the paper */
 body::before { content: ""; position: fixed; inset: 0;
                background: rgba(13, 17, 23, .75);
                z-index: -1; }
@@ -51,7 +50,6 @@ button:disabled { opacity: .5; cursor: default; }
 button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
 button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
-/* answer buttons side by side */
 #options { display: flex; flex-wrap: wrap; gap: 8px; }
 #options button { flex: 1 1 30%; margin: 8px 0 0; white-space: nowrap; }
 
@@ -62,35 +60,31 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 @keyframes pop { from { opacity: 0; transform: scale(.95); } }
 
 .intro p { line-height: 1.7; }
+.kodord { text-align: center; font-size: 1.4rem; letter-spacing: 4px;
+          border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
 </style>
 </head>
 <body>
 <div class="card">
 
-  <!-- Page 0: Intro -->
   <div id="page0" class="intro">
     <h1>Quiz Climber</h1>
-    <p style="text-align:center">Field log of an expedition from mountain to moon. One correct answer advances the climb.</p>
-    <button id="startBtn">Begin the climb</button>
+    <p style="text-align:center">Fältlogg från en expedition genom Skived i Forshaga kommun. Ett rätt svar i taget.</p>
+    <button id="startBtn">Påbörja klättringen</button>
   </div>
 
-  <!-- Page 1: Instructions -->
   <div id="page1" class="intro hidden">
-    <h1>How it works</h1>
-    <p>Four questions stand between you and the summit.
-       Answer correctly to gain altitude.</p>
-    <button id="instrBtn1">Next</button>
+    <h1>Så fungerar det</h1>
+    <p>Fyra frågor står mellan dig och toppen. Svara rätt för att gain höjd.</p>
+    <button id="instrBtn1">Nästa</button>
   </div>
 
-  <!-- Page 2: Instructions -->
   <div id="page2" class="intro hidden">
-    <h1>One rule</h1>
-    <p>There is <b>no penalty for a wrong answer</b> — the climb goes on regardless, and the correct answer is shown.
-       The score keeps a record of everything earned on the way up.</p>
-    <button id="instrBtn2">Onward</button>
+    <h1>En regel</h1>
+    <p>Det finns <b>inget straff för fel svar</b> — klättringen fortsätter ändå och rätt svar visas. Poängen antecknas på vägen upp.</p>
+    <button id="instrBtn2">Framåt</button>
   </div>
 
-  <!-- Page 3: The game -->
   <div id="page3" class="hidden">
     <h1 id="title">Quiz Climber</h1>
     <img id="levelImg" class="level-img" alt="">
@@ -99,31 +93,33 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <div id="question"></div>
     <div id="options"></div>
     <div id="feedback" class="feedback"></div>
-    <button id="nextBtn" class="hidden">Continue</button>
+    <button id="nextBtn" class="hidden">Fortsätt</button>
   </div>
 
 </div>
 
 <script>
 const questions = [
-  { q: "What is 7 × 8?", options: ["54", "56", "64"], answer: 1 },
-  { q: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury"], answer: 2 },
-  { q: "What color do you get mixing blue and yellow?", options: ["Green", "Purple", "Orange"], answer: 0 },
-  { q: "What year did the first man walk on the Moon?", options: ["1969", "1972", "1965"], answer: 0 }
+  { q: "I vilken kommun ligger Skived?", options: ["Karlstad", "Forshaga", "Kil"], answer: 1 },
+  { q: "Vilken älv flyter förbi Skived?", options: ["Klarälven", "Göta älv", "Dalälven"], answer: 0 },
+  { q: "I vilken århundrade nämns Skived i skriftliga källor för första gången (år 1334)?", options: ["1200-talet", "1300-talet", "1400-talet"], answer: 1 },
+  { q: "Vad fanns det tidigare på Skivedsidan?", options: ["En gruva", "En kyrka", "En stor jordbruksfastighet"], answer: 2 }
 ];
+
+const kodord = ["DALSENTRAS", "BASLÄGER", "SKOGSLINJE", "SNÖLINJE", "SUMMIT"];
 
 const pages = ["page0", "page1", "page2", "page3"];
 
 let questionIndex = 0;
 let score = 0;
-let autoTimer = null; // pending auto-advance timeout
+let autoTimer = null;
 const nextBtn = document.getElementById("nextBtn");
 const card = document.querySelector(".card");
 const img = document.getElementById("levelImg");
 
 function animate() {
   card.classList.remove("fade-in");
-  void card.offsetWidth; // restart the animation
+  void card.offsetWidth;
   card.classList.add("fade-in");
 }
 
@@ -133,7 +129,6 @@ function showPage(n) {
   animate();
 }
 
-// Intro / instruction buttons: each advances one page
 document.getElementById("startBtn").onclick  = () => showPage(1);
 document.getElementById("instrBtn1").onclick = () => showPage(2);
 document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
@@ -148,13 +143,13 @@ function showQuestion() {
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
-    `Question ${questionIndex + 1} of ${total} — Score: ${score}`;
+    `Fråga ${questionIndex + 1} av ${total} — Poäng: ${score}`;
   document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
   const box = document.getElementById("options");
   box.innerHTML = "";
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
-  nextBtn.textContent = "Continue";
+  nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
 
   const letters = ["1", "2", "3", "4"];
@@ -175,15 +170,14 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "Correct — altitude gained.";
+    fb.textContent = "Rätt — höjd gainad.";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
-    fb.textContent = "Wrong — the correct answer is shown.";
+    fb.textContent = "Fel — rätt svar visas.";
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  // linger three seconds, then advance to the next question either way
   autoTimer = setTimeout(() => nextBtn.click(), 3000);
 }
 
@@ -203,21 +197,21 @@ function endScreen() {
   document.getElementById("feedback").textContent = "";
   nextBtn.classList.add("hidden");
 
-  // different end screens depending on the score
   const total = questions.length;
   let verdict;
-  if (score === total)      verdict = "A flawless ascent! You planted the flag on the summit itself. A true mountaineer of the mind.";
-  else if (score === 3)     verdict = "A strong climb! You crossed the snow line and stood just below the summit, gazing at the stars.";
-  else if (score === 2)     verdict = "A steady hike. You made it past the treeline — the mountain is impressed, even if the moon is not.";
-  else if (score === 1)     verdict = "A modest stroll from base camp. Pack better provisions and try the climb again.";
-  else                       verdict = "You never left the valley. The expedition committee suggests another attempt — the mountain isn't going anywhere.";
+  if (score === total)      verdict = "En felfri bestigning! Du planterade flaggan på själva toppen.";
+  else if (score === 3)     verdict = "En stark klättring! Du stod strax under toppen och blickade mot stjärnorna.";
+  else if (score === 2)     verdict = "En stadig vandring. Du kom förbi trädgränsen — berget är imponerat.";
+  else if (score === 1)     verdict = "En kort promenad från baslägret. Packa bättre och försök igen.";
+  else                       verdict = "Du lämnade aldrig dalen. Expeditionskommittén föreslår ett nytt försök.";
 
   document.getElementById("question").innerHTML =
-    `<h2>The climb is over. Final score: ${score} of ${total}</h2><p>${verdict}</p>`;
+    `<h2>Klättringen är över. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
+    `<p style="text-align:center; margin-top:1rem;">Ditt kodord är:</p>` +
+    `<div class="kodord">${kodord[score]}</div>`;
   animate();
 }
 
-// --- inactivity reset: back to intro after 120 s without interaction ---
 let idleTimer = null;
 
 function resetGame() {
@@ -230,23 +224,21 @@ function resetGame() {
 
 function bumpIdle() {
   clearTimeout(idleTimer);
-  idleTimer = setTimeout(resetGame, 120000); // 120 seconds
+  idleTimer = setTimeout(resetGame, 120000);
 }
 
 document.addEventListener("click", bumpIdle);
 document.addEventListener("keydown", bumpIdle);
-bumpIdle(); // start the timer when the page loads
+bumpIdle();
 
-// --- keyboard shortcuts: A / G / L pick answers, Enter or Space drives the page button ---
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
 
   if (key === "enter" || key === " " || e.code === "Space") {
-    e.preventDefault(); // stop Space from scrolling the page
+    e.preventDefault();
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
-      // skip answer buttons so Enter/Space never pick option 1
       const btn = visible.querySelector("button:not(.hidden):not(#options button)");
       if (btn && !btn.disabled) btn.click();
     }
@@ -261,7 +253,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
-showPage(0); // start on the intro
+showPage(0);
 </script>
 </body>
 </html>
