@@ -7,54 +7,87 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
 
 body { font-family: 'Nunito', sans-serif;
-       background: linear-gradient(160deg, #1e3c72, #2a5298);
-       color: #fff; display: flex; justify-content: center; align-items: center;
+       background: linear-gradient(160deg, #0d1117, #161b22);
+       color: #e6edf3; display: flex; justify-content: center; align-items: center;
        min-height: 100vh; margin: 0; }
 
-.card { background: rgba(255,255,255,.08);
+.card { background: rgba(255,255,255,.04);
          backdrop-filter: blur(10px);
-         border: 1px solid rgba(255,255,255,.15);
+         border: 1px solid rgba(255,255,255,.08);
          padding: 2rem 2.5rem; border-radius: 16px; width: 90%;
-         max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+         max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
 
-h1 { margin-top: 0; font-weight: 800; }
+h1 { margin-top: 0; font-weight: 800; text-align: center; }
+h2 { font-weight: 700; }
 
 .level-img { width: 100%; height: 160px; object-fit: cover;
-             border-radius: 12px; margin-bottom: 1rem; }
+             border-radius: 12px; margin-bottom: 1rem;
+             filter: brightness(.85); }
 
-.progress-bar { height: 8px; background: rgba(255,255,255,.15);
+.progress-bar { height: 8px; background: rgba(255,255,255,.1);
                 border-radius: 4px; overflow: hidden; margin-bottom: .5rem; }
-.progress-bar-fill { height: 100%; width: 0%; background: #38ef7d;
-                     border-radius: 4px; transition: width .4s ease; }
-.progress { font-size: .9rem; opacity: .85; margin-bottom: 1rem; }
+.progress-bar-fill { height: 100%; width: 0%; background: #2ea043;
+                     border-radius: 4px; transition: width .8s ease; }
+.progress { font-size: .9rem; opacity: .8; margin-bottom: 1rem; }
 
 button { display: block; width: 100%; margin: 8px 0; padding: 12px;
           font-size: 1rem; font-family: inherit; font-weight: 700;
-          border: none; border-radius: 10px; background: #3498db; color: #fff;
-          cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; }
+          border: none; border-radius: 10px; background: #21262d; color: #e6edf3;
+          cursor: pointer; transition: transform .3s ease, box-shadow .3s ease, background .3s ease; }
 button:hover:not(:disabled) { transform: translateY(-2px);
-                               box-shadow: 0 6px 14px rgba(0,0,0,.35); }
-button:disabled { opacity: .55; cursor: default; }
-button.correct { background: #27ae60; }
-button.wrong { background: #c0392b; }
+                               box-shadow: 0 6px 14px rgba(0,0,0,.5);
+                               background: #303940; }
+button:disabled { opacity: .5; cursor: default; }
+button.correct { background: #2ea043; }
+button.wrong { background: #b62324; }
 
 .feedback { min-height: 1.5rem; font-weight: 800; }
 .hidden { display: none; }
 
-.fade-in { animation: pop .35s ease; }
+.fade-in { animation: pop .6s ease; }
 @keyframes pop { from { opacity: 0; transform: scale(.95); } }
+
+.intro p { line-height: 1.6; }
 </style>
 </head>
 <body>
 <div class="card">
-  <h1 id="title">🏔️ Quiz Climber</h1>
-  <img id="levelImg" class="level-img" alt="">
-  <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
-  <div id="progress" class="progress"></div>
-  <div id="question"></div>
-  <div id="options"></div>
-  <div id="feedback" class="feedback"></div>
-  <button id="nextBtn" class="hidden">Continue</button>
+
+  <!-- Page 0: Intro -->
+  <div id="page0" class="intro">
+    <h1>🏔️ Quiz Climber</h1>
+    <p style="text-align:center">A climb from mountain to moon — one correct answer at a time.</p>
+    <button id="startBtn">Start climbing</button>
+  </div>
+
+  <!-- Page 1: Instructions -->
+  <div id="page1" class="intro hidden">
+    <h1>📋 How it works</h1>
+    <p>The climb is split into <b>levels</b>, each with a few questions.
+       Pick the right answer to move up; every level has its own picture and theme.</p>
+    <button id="instrBtn1">Next</button>
+  </div>
+
+  <!-- Page 2: Instructions -->
+  <div id="page2" class="intro hidden">
+    <h1>⚠️ One rule</h1>
+    <p>A <b>wrong answer sends you back to the start of the level</b> — so think before you click!
+       Your score keeps what you earned along the way.</p>
+    <button id="instrBtn2">Let's go!</button>
+  </div>
+
+  <!-- Page 3: The game -->
+  <div id="page3" class="hidden">
+    <h1 id="title">🏔️ Quiz Climber</h1>
+    <img id="levelImg" class="level-img" alt="">
+    <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
+    <div id="progress" class="progress"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="hidden">Continue</button>
+  </div>
+
 </div>
 
 <script>
@@ -76,6 +109,9 @@ const levels = [
   ]}
 ];
 
+const pages = ["page0", "page1", "page2", "page3"];
+let page = 0;
+
 let level = parseInt(localStorage.getItem("quizLevel")) || 0;
 if (level >= levels.length) { level = 0; localStorage.removeItem("quizLevel"); }
 let questionIndex = 0;
@@ -90,14 +126,23 @@ function animate() {
   card.classList.add("fade-in");
 }
 
+function showPage(n) {
+  pages.forEach((id, i) =>
+    document.getElementById(id).classList.toggle("hidden", i !== n));
+  animate();
+}
+
+// Intro / instruction buttons: each advances one page
+document.getElementById("startBtn").onclick  = () => showPage(1);
+document.getElementById("instrBtn1").onclick = () => showPage(2);
+document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
+
 function showQuestion() {
   const cur = levels[level];
   const q = cur.questions[questionIndex];
   const total = cur.questions.length;
 
   document.getElementById("title").textContent = `${cur.emoji} Quiz Climber`;
-
-  // Level image — a question can override it with its own "image" field
   img.src = q.image || cur.image;
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
@@ -170,7 +215,7 @@ function endScreen() {
   animate();
 }
 
-showQuestion();
+showPage(0); // start on the intro
 </script>
 </body>
 </html>
