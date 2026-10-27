@@ -21,20 +21,23 @@ body::before { content: ""; position: fixed; inset: 0;
          border: 1px solid #b8ad93;
          border-radius: 3px;
          box-shadow: 2px 3px 12px rgba(0,0,0,.5);
-         padding: 2rem 2.5rem; width: 90%;
-         max-width: 480px; }
+         padding: 2.5rem 3rem; width: 90%;
+         max-width: 560px; }
 
-h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px; }
-h2 { font-weight: 400; }
+h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px;
+     font-size: 1.8rem; }
+h2 { font-weight: 400; font-size: 1.35rem; }
 
-.progress-bar { height: 8px; background: rgba(43, 36, 28, .15);
+.intro p { line-height: 1.7; font-size: 1.15rem; }
+
+.progress-bar { height: 10px; background: rgba(43, 36, 28, .15);
                 border-radius: 2px; overflow: hidden; margin-bottom: .5rem; }
 .progress-bar-fill { height: 100%; width: 0%; background: #5a6e37;
                      border-radius: 2px; transition: width 2s ease; }
-.progress { font-size: .9rem; opacity: .75; margin-bottom: 1rem; }
+.progress { font-size: 1rem; opacity: .75; margin-bottom: 1rem; }
 
-button { display: block; width: 100%; margin: 8px 0; padding: 12px;
-          font-size: 1rem; font-family: inherit;
+button { display: block; width: 100%; margin: 8px 0; padding: 14px;
+          font-size: 1.15rem; font-family: inherit;
           border: 1px solid #2b241c; border-radius: 2px;
           background: #d9d0ba; color: #2b241c;
           cursor: pointer;
@@ -49,24 +52,30 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 #options { display: flex; flex-wrap: wrap; gap: 8px; }
 #options button { flex: 1 1 30%; margin: 8px 0 0; white-space: nowrap; }
 
-.feedback { min-height: 1.5rem; }
+/* Färgade svarsbokstäver */
+#options button .alt-letter { font-weight: bold; margin-right: .4em; }
+#options button.alt-a .alt-letter { color: #8c3a32; }
+#options button.alt-b .alt-letter { color: #2c5f8a; }
+#options button.alt-c .alt-letter { color: #7a5a12; }
+
+.feedback { min-height: 1.5rem; font-size: 1.15rem; }
 .hidden { display: none; }
 
 .fade-in { animation: pop 2s ease; }
 @keyframes pop { from { opacity: 0; transform: scale(.95); } }
 
-.intro p { line-height: 1.7; }
-.kodord { text-align: center; font-size: 1.4rem; letter-spacing: 4px;
+.kodord { text-align: center; font-size: 1.6rem; letter-spacing: 4px;
           border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
 
 @media (max-width: 480px) {
   body { padding: 1rem; align-items: flex-start; }
-  .card { padding: 1.25rem 1rem; width: 100%; }
-  h1 { font-size: 1.5rem; }
-  h2 { font-size: 1.15rem; }
-  button { padding: 14px 10px; font-size: 1rem; }
+  .card { padding: 1.5rem 1.25rem; width: 100%; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.2rem; }
+  .intro p { font-size: 1.05rem; }
+  button { padding: 14px 10px; font-size: 1.05rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
-  .kodord { font-size: 1.1rem; letter-spacing: 2px; }
+  .kodord { font-size: 1.2rem; letter-spacing: 2px; }
 }
 </style>
 </head>
@@ -163,10 +172,11 @@ function showQuestion() {
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
 
-  const letters = ["1", "2", "3", "4"];
+  const letters = ["A", "B", "C", "D"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
-    btn.textContent = `${letters[i]}. ${opt}`;
+    btn.classList.add("alt-" + letters[i].toLowerCase());
+    btn.innerHTML = `<span class="alt-letter">${letters[i]}.</span>${opt}`;
     btn.onclick = () => answer(i === q.answer, btn);
     box.appendChild(btn);
   });
@@ -255,7 +265,7 @@ document.addEventListener("keydown", e => {
     return;
   }
 
-  const map = { "a": 0, "g": 1, "l": 2 };
+  const map = { "q": 0, "t": 1, "o": 2 };
   const idx = map[key];
   if (idx !== undefined) {
     const opts = [...document.querySelectorAll("#options button")];
