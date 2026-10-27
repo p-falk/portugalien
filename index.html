@@ -58,7 +58,10 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 #options button.alt-b .alt-letter { color: #2c5f8a; }
 #options button.alt-c .alt-letter { color: #7a5a12; }
 
-.feedback { min-height: 1.5rem; font-size: 1.15rem; }
+.feedback { min-height: 2rem; font-size: 1.35rem; font-weight: bold;
+            text-align: center; margin: .75rem 0 .25rem; }
+.feedback.right { color: #3d5024; }
+.feedback.wrong { color: #8c3a32; }
 .hidden { display: none; }
 
 .fade-in { animation: pop 2s ease; }
@@ -66,6 +69,8 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 .kodord { text-align: center; font-size: 1.6rem; letter-spacing: 4px;
           border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
+
+#restartBtn { margin-top: 1.25rem; font-weight: bold; }
 
 @media (max-width: 480px) {
   body { padding: 1rem; align-items: flex-start; }
@@ -75,6 +80,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   .intro p { font-size: 1.05rem; }
   button { padding: 14px 10px; font-size: 1.05rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
+  .feedback { font-size: 1.2rem; }
   .kodord { font-size: 1.2rem; letter-spacing: 2px; }
 }
 </style>
@@ -110,13 +116,13 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   </div>
 
   <div id="page3" class="hidden">
-    <h1 id="title">Skrämd i Skived</h1>
     <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
     <div id="progress" class="progress"></div>
     <div id="question"></div>
     <div id="options"></div>
     <div id="feedback" class="feedback"></div>
     <button id="nextBtn" class="hidden">Fortsätt</button>
+    <button id="restartBtn" class="hidden">Börja om</button>
   </div>
 
 </div>
@@ -137,6 +143,7 @@ let questionIndex = 0;
 let score = 0;
 let autoTimer = null;
 const nextBtn = document.getElementById("nextBtn");
+const restartBtn = document.getElementById("restartBtn");
 const card = document.querySelector(".card");
 
 function animate() {
@@ -159,7 +166,7 @@ function showQuestion() {
   const q = questions[questionIndex];
   const total = questions.length;
 
-  document.getElementById("title").textContent = "Skrämd i Skived";
+  restartBtn.classList.add("hidden");
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
@@ -167,7 +174,9 @@ function showQuestion() {
   document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
   const box = document.getElementById("options");
   box.innerHTML = "";
-  document.getElementById("feedback").textContent = "";
+  const fb = document.getElementById("feedback");
+  fb.textContent = "";
+  fb.className = "feedback";
   nextBtn.classList.add("hidden");
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
@@ -191,11 +200,13 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "Rätt — Ett godispoäng!.";
+    fb.textContent = "✔ RÄTT! Ett godispoäng.";
+    fb.classList.add("right");
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
-    fb.textContent = "Fel — rätt svar visas.";
+    fb.textContent = "✘ FEL! Rätt svar visas grönt.";
+    fb.classList.add("wrong");
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
@@ -212,27 +223,27 @@ nextBtn.onclick = () => {
 function endScreen() {
   document.getElementById("barFill").style.width = "100%";
   document.getElementById("progress").textContent = "";
-  document.getElementById("title").textContent = "Skrämd i Skived";
   document.getElementById("options").innerHTML = "";
-  document.getElementById("feedback").textContent = "";
+  const fb = document.getElementById("feedback");
+  fb.textContent = "";
+  fb.className = "feedback";
   nextBtn.classList.add("hidden");
 
   const total = questions.length;
   let verdict;
   if (score === total)      verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg kodordet nedan";
-  else if (score === 3)     verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet nedan ";
+  else if (score === 3)     verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
   else if (score === 2)     verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
   else if (score === 1)     verdict = "Urdåligt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
-  else                       verdict = "Inga rätt...Tryck på ringklockan, och när de öppnar säg kodordet nedan";
+  else                       verdict = "Inga rätt... Tryck på ringklockan, och när de öppnar säg kodordet nedan";
 
   document.getElementById("question").innerHTML =
-    `<h2>. Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
+    `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
     `<p style="text-align:center; margin-top:1rem;">Ditt kodord är:</p>` +
     `<div class="kodord">${kodord[score]}</div>`;
+  restartBtn.classList.remove("hidden");
   animate();
 }
-
-let idleTimer = null;
 
 function resetGame() {
   clearTimeout(autoTimer);
@@ -241,6 +252,10 @@ function resetGame() {
   document.getElementById("barFill").style.width = "0%";
   showPage(0);
 }
+
+restartBtn.onclick = resetGame;
+
+let idleTimer = null;
 
 function bumpIdle() {
   clearTimeout(idleTimer);
