@@ -101,24 +101,21 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   </div>
 
   <div id="page1" class="intro hidden">
-    <p>Du kommer nu att få fyra frågor om Hallowen och Skived. För varje rätt svar kommer du få ett poäng.</p>
-            <p>När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.</p>
-         
+    <p>Du kommer nu att få fyra frågor om Halloween och Skived. För varje rätt svar kommer du få ett poäng.</p>
+    <p>När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.</p>
     <button id="instrBtn1">Nästa</button>
   </div>
 
   <div id="page2" class="intro hidden">
-
-         <p> När du fått ditt kodord, tyck på ringklockan på trappan. När de öppnar därren säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
-     <p> ...eller så blir du utskälld för att du svarat dåligt)</p>
-     <p> ---</p>
+    <p> När du fått ditt kodord, tyck på ringklockan på trappan. När de öppnar dörren säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
+    <p> ...eller så blir du utskälld för att du svarat dåligt)</p>
+    <p> ---</p>
     <p> 4 rätt =  Superbra godispåse! </p>
     <p> 3 rätt =  En helt OK chokladbit. </p>
     <p> 2 rätt =  En rätt tråkig klubba. </p>
     <p> 1 rätt =  En gammal morot  </p>
-     <p> 0 rätt = Katten i Hatten kommer att jaga dig</p>
-         
-         <button id="instrBtn2">Till frågorna >>> </button>
+    <p> 0 rätt = Katten i Hatten kommer att jaga dig</p>
+    <button id="instrBtn2">Till frågorna >>> </button>
   </div>
 
   <div id="page3" class="hidden">
@@ -135,7 +132,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 <script>
 const questions = [
-  { q: "Vilken grönsak är en klassisk Halloween-symbol?, options: ["Äpple", "Pumpa", "Fiskpinne"], answer: 1 },
+  { q: "Vilken grönsak är en klassisk Halloween-symbol?", options: ["Äpple", "Pumpa", "Fiskpinne"], answer: 1 },
   { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 1 },
   { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson, den svartklädda kvinnan med den tomma barnvagnen i Skived, som nu sägs spöka på olika platser?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1 },
   { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Janina Falk", "Caligula", "Kenta Kofot"], answer: 0 }
@@ -275,7 +272,7 @@ let idleTimer = null;
 
 function bumpIdle() {
   clearTimeout(idleTimer);
-  idleTimer = setTimeout(resetGame, 120000);
+  idleTimer = setTimeout(resetGame, 72000);
 }
 
 document.addEventListener("click", bumpIdle);
@@ -290,8 +287,8 @@ document.addEventListener("keydown", e => {
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
-      const btn = visible.querySelector("button:not(.hidden):not(#options button)");
-      if (btn && !btn.disabled) btn.click();
+      const btn = visible.querySelector("button:not(.hidden)");
+      if (btn && !btn.disabled && !btn.closest("#options")) btn.click();
     }
     return;
   }
