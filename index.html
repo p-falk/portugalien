@@ -146,6 +146,16 @@ const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
 const card = document.querySelector(".card");
 
+/* --- Röst (Web Speech API) --- */
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "sv-SE";
+  u.rate = 0.95;
+  speechSynthesis.speak(u);
+}
+
 function animate() {
   card.classList.remove("fade-in");
   void card.offsetWidth;
@@ -158,9 +168,19 @@ function showPage(n) {
   animate();
 }
 
-document.getElementById("startBtn").onclick  = () => showPage(1);
-document.getElementById("instrBtn1").onclick = () => showPage(2);
-document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
+document.getElementById("startBtn").onclick  = () => {
+  speak("Gillar du godis? Här räcker det inte med att komma utklädd. Man måste svara rätt på frågor också!");
+  showPage(1);
+};
+document.getElementById("instrBtn1").onclick = () => {
+  speak("Du kommer nu att få fyra frågor om Halloween och Skived. För varje rätt svar kommer du få ett poäng. När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.");
+  showPage(2);
+};
+document.getElementById("instrBtn2").onclick = () => {
+  speak("När du fått ditt kodord, tryck på ringklockan på trappan. När de öppnar dörren säger du ditt kodord. Sen får du det godiset du förtjänar. Lycka till!");
+  showPage(3);
+  showQuestion();
+};
 
 function showQuestion() {
   const q = questions[questionIndex];
@@ -190,6 +210,7 @@ function showQuestion() {
     box.appendChild(btn);
   });
 
+  speak(`Fråga ${questionIndex + 1}. ${q.q}`);
   animate();
 }
 
@@ -202,11 +223,13 @@ function answer(correct, btn) {
     btn.classList.add("correct");
     fb.textContent = "✔ RÄTT! Ett godispoäng.";
     fb.classList.add("right");
+    speak("Rätt! Ett godispoäng.");
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
     fb.textContent = "✘ FEL! Rätt svar visas grönt.";
     fb.classList.add("wrong");
+    speak("Fel! Rätt svar visas grönt.");
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
@@ -242,11 +265,14 @@ function endScreen() {
     `<p style="text-align:center; margin-top:1rem;">Ditt kodord är:</p>` +
     `<div class="kodord">${kodord[score]}</div>`;
   restartBtn.classList.remove("hidden");
+
+  speak(`Slutpoäng: ${score} av ${total}. ${verdict} Ditt kodord är: ${kodord[score]}.`);
   animate();
 }
 
 function resetGame() {
   clearTimeout(autoTimer);
+  if (window.speechSynthesis) speechSynthesis.cancel();
   questionIndex = 0;
   score = 0;
   document.getElementById("barFill").style.width = "0%";
