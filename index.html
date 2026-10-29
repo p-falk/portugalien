@@ -139,15 +139,27 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 </div>
 
 <script>
-const questions = [
-  { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0,
-    explain: "Halloween kommer från det keltiska Samhain-firandet i Irland. USA gjorde firandet stort, men ursprunget är irländskt." },
-   { q: "Vad är det latinska ordet för 'Mässan för de döda'", options: ["Carpe Diem", "Reqviem", "Tralalero Tralala"], answer: 1,
-    explain: "Requiem är en katolsk dödsmässa. Själva ordet betyer 'vila'." },
-  { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson (1855-1938), den svartklädda kvinnan med den tomma barnvagnen, som nu sägs spöka på olika platser i Skived?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1,
-    explain: "Hon var alltid svartklädd och hade ett rep runt midjan. I repet hade hon ett lås och en kniv." },
-  { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
-    explain: "Janina Falk är den läskigaste — alla vet det. Och hon bor i det här huset..." }
+const questionSets = [
+  [ // UPPSÄTTNING A — era nuvarande frågor
+    { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0,
+      explain: "Halloween kommer från det keltiska Samhain-firandet i Irland. USA gjorde firandet stort, men ursprunget är irländskt." },
+    { q: "Vad är det latinska ordet för 'Mässan för de döda'", options: ["Carpe Diem", "Reqviem", "Tralalero Tralala"], answer: 1,
+      explain: "Requiem är en katolsk dödsmässa. Själva ordet betyer 'vila'." },
+    { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson (1855-1938), den svartklädda kvinnan med den tomma barnvagnen, som nu sägs spöka på olika platser i Skived?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1,
+      explain: "Hon var alltid svartklädd och hade ett rep runt midjan. I repet hade hon ett lås och en kniv." },
+    { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
+      explain: "Janina Falk är den läskigaste — alla vet det. Och hon bor i det här huset..." }
+  ],
+  [ // UPPSÄTTNING B — fyra nya frågor, ersätt platshållarna
+    { q: "Vad heter spindeln som bygger nät i Skivedskolans källare?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 0,
+      explain: "Ersätt med er egen fråga och förklaring." },
+    { q: "Platshållarfråga 2?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 1,
+      explain: "Ersätt med er egen fråga och förklaring." },
+    { q: "Platshållarfråga 3?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 2,
+      explain: "Ersätt med er egen fråga och förklaring." },
+    { q: "Platshållarfråga 4?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 0,
+      explain: "Ersätt med er egen fråga och förklaring." }
+  ]
 ];
 
 const kodord = ["HEJA DJURGÅRDEN", "GOD MORGON", "GLAD PÅSK", "JAG HAR SKITIT I GRUSGÅNGEN", "GOD JUL"];
@@ -156,6 +168,8 @@ const pages = ["page0", "page1", "page2", "page3"];
 
 let questionIndex = 0;
 let score = 0;
+let currentSet = 0;                 // 0 = uppsättning A, 1 = uppsättning B
+let questions = questionSets[0];    // aktiv uppsättning
 let autoTimer = null;
 const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
@@ -230,7 +244,7 @@ function answer(correct, btn) {
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  autoTimer = setTimeout(() => nextBtn.click(), 6000);
+  autoTimer = setTimeout(() => nextBtn.click(), 7000);
 }
 
 nextBtn.onclick = () => {
@@ -283,6 +297,8 @@ function resetGame() {
   clearTimeout(autoTimer);
   questionIndex = 0;
   score = 0;
+  currentSet = (currentSet + 1) % questionSets.length;  // A → B → A → B ...
+  questions = questionSets[currentSet];
   document.getElementById("barFill").style.width = "0%";
   showPage(0);
 }
