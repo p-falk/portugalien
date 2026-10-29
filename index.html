@@ -150,15 +150,33 @@ const questionSets = [
     { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
       explain: "Janina Falk är den läskigaste — alla vet det. Och hon bor i det här huset..." }
   ],
-  [ // UPPSÄTTNING B — fyra nya frågor, ersätt platshållarna
-    { q: "Vad heter spindeln som bygger nät i Skivedskolans källare?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 0,
-      explain: "Ersätt med er egen fråga och förklaring." },
-    { q: "Platshållarfråga 2?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 1,
-      explain: "Ersätt med er egen fråga och förklaring." },
-    { q: "Platshållarfråga 3?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 2,
-      explain: "Ersätt med er egen fråga och förklaring." },
-    { q: "Platshållarfråga 4?", options: ["Platshållare A", "Platshållare B", "Platshållare C"], answer: 0,
-      explain: "Ersätt med er egen fråga och förklaring." }
+  [ // UPPSÄTTNING B — skräck, blod och Skived
+    
+         
+       {
+      q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
+      options: ["Kärlek", "En träpåle genom hjärtat", "Nocco"],
+      answer: 2,
+      explain: "I många vampyrberättelser sägs en träpåle genom hjärtat kunna döda vampyren."
+    },
+    {
+      q: "Blod kan vara läskigt, men är livsviktigt. Hur vilken av följande är en blodgrupp?",
+      options: ["IJWBC", "JLC", "AB"],
+      answer: 2,
+      explain: "Det så kallade AB0-systemets har fyra huvudgrupper: A, B, AB och 0."
+    },
+    {
+      q: "Ibland ser man döingar uppe på Hembygsgården i Skived, men det är oftast bara pensionärer. Vilket år grundades Forshaga hembygdsförening?",
+      options: ["1689", "1936", "2025"],
+      answer: 1,
+      explain: "Sveriges äldsta hembygdsförening är Ström i Jämtland (1909) och den nyaste är Rö utanför Norrtälje (2011)."
+    },
+    {
+                 q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
+      options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
+      answer: 0,
+      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen."
+    }
   ]
 ];
 
@@ -234,6 +252,7 @@ function answer(correct, btn) {
     btn.classList.add("correct");
     fb.textContent = "✔ RÄTT! Ett godispoäng!";
     fb.classList.add("right");
+    document.getElementById("explain").textContent = q.explain || "";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[q.answer].classList.add("correct");
@@ -244,7 +263,9 @@ function answer(correct, btn) {
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  autoTimer = setTimeout(() => nextBtn.click(), 7000);
+  nextBtn.classList.remove("hidden");
+
+  autoTimer = setTimeout(() => nextBtn.click(), 9000);
 }
 
 nextBtn.onclick = () => {
