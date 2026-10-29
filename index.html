@@ -282,8 +282,8 @@ function endScreen() {
   let verdict;
   if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg ditt kodord";
   else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan testa att spela igem. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else                  verdict = "Urdåligt. Tryck på ringklockan Du kan testa att spela igem. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else                  verdict = "Urdåligt. Tryck på ringklockan Du kan testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
 
   document.getElementById("question").innerHTML =
     `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
