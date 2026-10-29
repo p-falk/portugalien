@@ -79,8 +79,6 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 .kodord { text-align: center; font-size: 2.1rem; letter-spacing: 4px;
           border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
 
-.scare-img { display: block; width: 100%; max-width: 520px;
-             margin: 1rem auto 0; border: 1px solid #8c3a32; border-radius: 3px; }
 .scare-text { text-align: center; font-size: 1.6rem; font-weight: bold;
               color: #8c3a32; margin-top: 1rem; }
 
@@ -123,7 +121,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <p> 3 rätt =  En helt OK chokladbit. </p>
     <p> 2 rätt =  En rätt tråkig klubba. </p>
     <p> 1 rätt =  En gammal morot  </p>
-    <p> 0 rätt = Inget godis. Du blir hemsökt av Allmänbildningens spöke</p>
+    <p> 0 rätt = Inget godis. Gå hem och läs en bok...</p>
     <button id="instrBtn2">Fortsätt >>> </button>
   </div>
 
@@ -259,7 +257,7 @@ function answer(correct, btn) {
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[q.answer].classList.add("correct");
-    fb.textContent = "✘ FEL! Rätt svar visas i grönt.";
+    fb.textContent = "✘ FEL!";
     fb.classList.add("wrong");
     document.getElementById("explain").textContent =
       "Rätt svar: " + q.options[q.answer] + " — " + (q.explain || "");
@@ -295,21 +293,17 @@ function endScreen() {
   if (score === 0) {
     document.getElementById("question").innerHTML =
       `<h2>Slutpoäng: 0 av ${total}</h2>` +
-      `<p class="scare-text">Inga rätt... Allmänbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>` +
-      `<img class="scare-img" src="https://gingerbluedecor.com/cdn/shop/files/HW-578.jpg?v=1754149083&width=800" alt="Skugga som väntar efter vägen">`;
+      `<p class="scare-text">Inga rätt... Allmänbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>`;
     restartBtn.classList.remove("hidden");
     animate();
-    const sfx = new Audio("boo.mp3");   // t.ex. ett skratt, tjut eller "boo"
-    sfx.volume = 0.8;
-    sfx.play();
     return;
   }
 
   let verdict;
   if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg ditt kodord";
   else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else                  verdict = "Urdåligt. Tryck på ringklockan Du kan testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan också testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else                  verdict = "Urdåligt. Tryck på ringklockan. Du kan också testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
 
   document.getElementById("question").innerHTML =
     `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
