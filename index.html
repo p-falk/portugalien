@@ -60,15 +60,18 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 #options button.alt-b .alt-letter { color: #2c5f8a; }
 #options button.alt-c .alt-letter { color: #7a5a12; }
 
-.feedback { min-height: 2rem; font-size: 1.8rem; font-weight: bold;
+/* Reserverad plats så att inget flyttar sig när svaret visas */
+.feedback { min-height: 2.6rem; font-size: 1.8rem; font-weight: bold;
             text-align: center; margin: .75rem 0 .25rem; }
 .feedback.right { color: #3d5024; }
 .feedback.wrong { color: #8c3a32; }
 
 .explain { font-size: 1.3rem; line-height: 1.6; text-align: center;
-           margin: .5rem 0 .25rem; opacity: .9; }
+           margin: .5rem 0 .25rem; opacity: .9;
+           min-height: 6.9rem; }
 
 .hidden { display: none; }
+.ghosted { visibility: hidden; }
 
 .fade-in { animation: pop 2s ease; }
 @keyframes pop { from { opacity: 0; transform: scale(.95); } }
@@ -91,8 +94,8 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   .intro p { font-size: 1.3rem; }
   button { padding: 16px 10px; font-size: 1.3rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
-  .feedback { font-size: 1.5rem; }
-  .explain { font-size: 1.15rem; }
+  .feedback { font-size: 1.5rem; min-height: 2.2rem; }
+  .explain { font-size: 1.15rem; min-height: 10rem; }
   .scare-text { font-size: 1.4rem; }
   .kodord { font-size: 1.5rem; letter-spacing: 2px; }
 }
@@ -131,7 +134,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <div id="progress" class="progress"></div>
     <div id="feedback" class="feedback"></div>
     <p id="explain" class="explain"></p>
-    <button id="nextBtn" class="hidden">Fortsätt</button>
+    <button id="nextBtn" class="ghosted">Fortsätt</button>
     <button id="restartBtn" class="hidden">Börja om <small>(tryck "Fortsätt")</small></button>
   </div>
 
@@ -224,7 +227,8 @@ function showQuestion() {
   fb.textContent = "";
   fb.className = "feedback";
   document.getElementById("explain").textContent = "";
-  nextBtn.classList.add("hidden");
+  nextBtn.classList.add("ghosted");      // tar plats men syns inte
+  nextBtn.classList.remove("hidden");
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
 
@@ -262,12 +266,13 @@ function answer(correct, btn) {
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  nextBtn.classList.remove("hidden");
+  nextBtn.classList.remove("ghosted");   // syns nu, men flyttar inget
 
   autoTimer = setTimeout(() => nextBtn.click(), 9000);
 }
 
 nextBtn.onclick = () => {
+  if (nextBtn.classList.contains("ghosted")) return;   // ingen klick innan svar
   clearTimeout(autoTimer);
   questionIndex++;
   if (questionIndex >= questions.length) return endScreen();
@@ -283,6 +288,7 @@ function endScreen() {
   fb.className = "feedback";
   document.getElementById("explain").textContent = "";
   nextBtn.classList.add("hidden");
+  nextBtn.classList.remove("ghosted");
 
   const total = questions.length;
 
@@ -344,7 +350,7 @@ document.addEventListener("keydown", e => {
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
-      const btn = visible.querySelector("button:not(.hidden)");
+      const btn = visible.querySelector("button:not(.hidden):not(.ghosted)");
       if (btn && !btn.disabled && !btn.closest("#options")) btn.click();
     }
     return;
