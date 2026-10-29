@@ -253,13 +253,13 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "✔ RÄTT! Ett godispoäng!";
+    fb.textContent = "✔ RÄTT!";
     fb.classList.add("right");
     document.getElementById("explain").textContent = q.explain || "";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[q.answer].classList.add("correct");
-    fb.textContent = "✘ FEL! Rätt svar visas i grönt.";
+    fb.textContent = "✘ FEL!";
     fb.classList.add("wrong");
     document.getElementById("explain").textContent =
       "Rätt svar: " + q.options[q.answer] + " — " + (q.explain || "");
