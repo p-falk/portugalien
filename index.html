@@ -101,20 +101,20 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   </div>
 
   <div id="page1" class="intro hidden">
-    <p>Du kommer nu att få fyra frågor om Halloween och Skived. För varje rätt svar kommer du få ett poäng.</p>
+    <p>Du kommer nu att få fyra frågor om Hallowen och Skived. För varje rätt svar kommer du få ett poäng.</p>
     <p>När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.</p>
     <button id="instrBtn1">Nästa</button>
   </div>
 
   <div id="page2" class="intro hidden">
-    <p> När du fått ditt kodord, tryck på ringklockan brevid dörren. När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
+    <p> När du fått ditt kodord, tyck på ringklockan på den gula plattformen här till höger. När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
     <p> ...eller så blir du utskälld för att du svarat dåligt)</p>
     <p> ---</p>
     <p> 4 rätt =  Superbra godispåse! </p>
     <p> 3 rätt =  En helt OK chokladbit. </p>
     <p> 2 rätt =  En rätt tråkig klubba. </p>
     <p> 1 rätt =  En gammal morot  </p>
-    <p> 0 rätt = Inget godis. Katten i Hatten kommer att jaga dig ute på gatan</p>
+    <p> 0 rätt = Inget godis. Du blir hemsökt av folkbildningens spöke</p>
     <button id="instrBtn2">Till frågorna >>> </button>
   </div>
 
@@ -184,11 +184,12 @@ function showQuestion() {
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
 
-  const letters = ["A", "B", "C", "D"];
+  const keys = ["Q", "6", "0"];
+  const classes = ["alt-a", "alt-b", "alt-c"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
-    btn.classList.add("alt-" + letters[i].toLowerCase());
-    btn.innerHTML = `<span class="alt-letter">${letters[i]}.</span>${opt}`;
+    btn.classList.add(classes[i]);
+    btn.innerHTML = `<span class="alt-letter">${keys[i]}.</span>${opt}`;
     btn.onclick = () => answer(i === q.answer, btn);
     box.appendChild(btn);
   });
@@ -203,12 +204,12 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "✔ RÄTT! Ett godispoäng.";
+    fb.textContent = "✔ RÄTT! Ett godispoäng!";
     fb.classList.add("right");
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
-    fb.textContent = "✘ FEL! Rätt svar visas grönt.";
+    fb.textContent = "✘ FEL! Rätt svar visas i grönt.";
     fb.classList.add("wrong");
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
@@ -234,21 +235,24 @@ function endScreen() {
 
   const total = questions.length;
 
-  if (score === 0) {
-    document.getElementById("question").innerHTML =
-      `<h2>Slutpoäng: 0 av ${total}</h2>` +
-      `<p class="scare-text">Inga rätt... Då väntar jag på dig efter vägen.</p>` +
-      `<img class="scare-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHKdiF1PQKE5Qz28U0eCtIyQHRsOFcX9wx-o3juFoMH2kKjtNXP28OkieW&s=10" alt="Skugga som väntar efter vägen">`;
-    restartBtn.classList.remove("hidden");
-    animate();
-    return;
-  }
+if (score === 0) {
+  document.getElementById("question").innerHTML =
+    `<h2>Slutpoäng: 0 av ${total}</h2>` +
+    `<p class="scare-text">Inga rätt... Folkbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>` +
+    `<img class="scare-img" src="https://gingerbluedecor.com/cdn/shop/files/HW-578.jpg?v=1754149083&width=800" alt="Skugga som väntar efter vägen">`;
+  restartBtn.classList.remove("hidden");
+  animate();
+  const sfx = new Audio("boo.mp3");   // t.ex. ett skratt, tjut eller "boo"
+  sfx.volume = 0.8;
+  sfx.play();
+  return;
+}
 
   let verdict;
-  if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg kodordet nedan";
-  else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
-  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
-  else                  verdict = "Urdåligt. Tryck på ringklockan, och när de öppnar säg kodordet nedan";
+  if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
+  else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
+  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
+  else                  verdict = "Urdåligt. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
 
   document.getElementById("question").innerHTML =
     `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
@@ -293,7 +297,7 @@ document.addEventListener("keydown", e => {
     return;
   }
 
-  const map = { "q": 0, "t": 1, "o": 2 };
+  const map = { "q": 0, "6": 1, "0": 2 };
   const idx = map[key];
   if (idx !== undefined) {
     const opts = [...document.querySelectorAll("#options button")];
