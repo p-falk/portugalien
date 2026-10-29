@@ -22,24 +22,24 @@ body::before { content: ""; position: fixed; inset: 0;
          border: 1px solid #b8ad93;
          border-radius: 3px;
          box-shadow: 2px 3px 12px rgba(0,0,0,.5);
-         padding: 2.5rem 3rem; width: 90%;
-         max-width: 560px; }
+         padding: 3rem 3.5rem; width: 92%;
+         max-width: 760px; }
 
 h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px;
-     font-size: 1.8rem; }
-h2 { font-weight: 400; font-size: 1.35rem; }
+     font-size: 2.6rem; }
+h2 { font-weight: 400; font-size: 1.9rem; line-height: 1.4; }
 
-.intro p { line-height: 1.7; font-size: 1.15rem; }
+.intro p { line-height: 1.7; font-size: 1.5rem; }
 
-.progress-bar { height: 10px; background: rgba(43, 36, 28, .15);
+.progress-bar { height: 12px; background: rgba(43, 36, 28, .15);
                 border-radius: 2px; overflow: hidden;
                 margin-top: 1.25rem; margin-bottom: .5rem; }
 .progress-bar-fill { height: 100%; width: 0%; background: #5a6e37;
                      border-radius: 2px; transition: width 2s ease; }
-.progress { font-size: 1rem; opacity: .75; margin-bottom: 1rem; }
+.progress { font-size: 1.3rem; opacity: .75; margin-bottom: 1rem; }
 
-button { display: block; width: 100%; margin: 8px 0; padding: 14px;
-          font-size: 1.15rem; font-family: inherit;
+button { display: block; width: 100%; margin: 8px 0; padding: 18px;
+          font-size: 1.5rem; font-family: inherit;
           border: 1px solid #2b241c; border-radius: 2px;
           background: #d9d0ba; color: #2b241c;
           cursor: pointer;
@@ -60,12 +60,12 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 #options button.alt-b .alt-letter { color: #2c5f8a; }
 #options button.alt-c .alt-letter { color: #7a5a12; }
 
-.feedback { min-height: 2rem; font-size: 1.35rem; font-weight: bold;
+.feedback { min-height: 2rem; font-size: 1.8rem; font-weight: bold;
             text-align: center; margin: .75rem 0 .25rem; }
 .feedback.right { color: #3d5024; }
 .feedback.wrong { color: #8c3a32; }
 
-.explain { font-size: 1.05rem; line-height: 1.6; text-align: center;
+.explain { font-size: 1.3rem; line-height: 1.6; text-align: center;
            margin: .5rem 0 .25rem; opacity: .9; }
 
 .hidden { display: none; }
@@ -73,28 +73,28 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 .fade-in { animation: pop 2s ease; }
 @keyframes pop { from { opacity: 0; transform: scale(.95); } }
 
-.kodord { text-align: center; font-size: 1.6rem; letter-spacing: 4px;
+.kodord { text-align: center; font-size: 2.1rem; letter-spacing: 4px;
           border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
 
-.scare-img { display: block; width: 100%; max-width: 420px;
+.scare-img { display: block; width: 100%; max-width: 520px;
              margin: 1rem auto 0; border: 1px solid #8c3a32; border-radius: 3px; }
-.scare-text { text-align: center; font-size: 1.3rem; font-weight: bold;
+.scare-text { text-align: center; font-size: 1.6rem; font-weight: bold;
               color: #8c3a32; margin-top: 1rem; }
 
 #restartBtn { margin-top: 1.25rem; font-weight: bold; }
 
 @media (max-width: 480px) {
   body { padding: 1rem; align-items: flex-start; }
-  .card { padding: 1.5rem 1.25rem; width: 100%; }
-  h1 { font-size: 1.6rem; }
-  h2 { font-size: 1.2rem; }
-  .intro p { font-size: 1.05rem; }
-  button { padding: 14px 10px; font-size: 1.05rem; }
+  .card { padding: 1.75rem 1.25rem; width: 100%; }
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.55rem; }
+  .intro p { font-size: 1.3rem; }
+  button { padding: 16px 10px; font-size: 1.3rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
-  .feedback { font-size: 1.2rem; }
-  .explain { font-size: .95rem; }
-  .scare-text { font-size: 1.15rem; }
-  .kodord { font-size: 1.2rem; letter-spacing: 2px; }
+  .feedback { font-size: 1.5rem; }
+  .explain { font-size: 1.15rem; }
+  .scare-text { font-size: 1.4rem; }
+  .kodord { font-size: 1.5rem; letter-spacing: 2px; }
 }
 </style>
 </head>
@@ -108,7 +108,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   </div>
 
   <div id="page1" class="intro hidden">
-    <p>Du kommer nu att få fyra frågor om Hallowen och Skived. För varje rätt svar kommer du få ett poäng.</p>
+    <p>Du kommer nu att få fyra frågor. De är lite läskiga och lite lokala.</p>
     <p>När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.</p>
     <button id="instrBtn1">Nästa</button>
   </div>
@@ -151,8 +151,8 @@ const questionSets = [
       explain: "Janina Falk är den läskigaste — alla vet det. Och hon bor i det här huset..." }
   ],
   [ // UPPSÄTTNING B — skräck, blod och Skived
-    
-         
+
+
        {
       q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
       options: ["Kärlek", "En träpåle genom hjärtat", "Nocco"],
