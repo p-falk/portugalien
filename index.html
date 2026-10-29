@@ -43,9 +43,8 @@ button { display: block; width: 100%; margin: 8px 0; padding: 18px;
           border: 1px solid #2b241c; border-radius: 2px;
           background: #d9d0ba; color: #2b241c;
           cursor: pointer;
-          transition: transform 1.2s ease, box-shadow 1.2s ease, background 1.2s ease; }
-button:hover:not(:disabled) { transform: translateY(-2px);
-                               box-shadow: 0 6px 14px rgba(0,0,0,.35);
+          transition: background 1.2s ease, box-shadow 1.2s ease; }
+button:hover:not(:disabled) { box-shadow: 0 6px 14px rgba(0,0,0,.35);
                                background: #cfc5ab; }
 button:disabled { opacity: .5; cursor: default; }
 button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
@@ -60,21 +59,22 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 #options button.alt-b .alt-letter { color: #2c5f8a; }
 #options button.alt-c .alt-letter { color: #7a5a12; }
 
-/* Reserverad plats så att inget flyttar sig när svaret visas */
-.feedback { min-height: 2.6rem; font-size: 1.8rem; font-weight: bold;
-            text-align: center; margin: .75rem 0 .25rem; }
+/* FAST höjd (inte min-height) + scroll om texten är lång */
+.feedback { height: 2.6rem; font-size: 1.8rem; font-weight: bold;
+            text-align: center; margin: .75rem 0 .25rem; overflow: hidden; }
 .feedback.right { color: #3d5024; }
 .feedback.wrong { color: #8c3a32; }
 
 .explain { font-size: 1.3rem; line-height: 1.6; text-align: center;
            margin: .5rem 0 .25rem; opacity: .9;
-           min-height: 6.9rem; }
+           height: 8.6rem; overflow-y: auto; }
 
 .hidden { display: none; }
 .ghosted { visibility: hidden; }
 
-.fade-in { animation: pop 2s ease; }
-@keyframes pop { from { opacity: 0; transform: scale(.95); } }
+/* Endast toning — ingen skalning, inget som flyttar sig */
+.fade-in { animation: fade .4s ease; }
+@keyframes fade { from { opacity: 0; } }
 
 .kodord { text-align: center; font-size: 2.1rem; letter-spacing: 4px;
           border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
@@ -94,8 +94,8 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   .intro p { font-size: 1.3rem; }
   button { padding: 16px 10px; font-size: 1.3rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
-  .feedback { font-size: 1.5rem; min-height: 2.2rem; }
-  .explain { font-size: 1.15rem; min-height: 10rem; }
+  .feedback { font-size: 1.5rem; height: 2.2rem; }
+  .explain { font-size: 1.15rem; height: 11rem; }
   .scare-text { font-size: 1.4rem; }
   .kodord { font-size: 1.5rem; letter-spacing: 2px; }
 }
@@ -224,7 +224,9 @@ function showQuestion() {
   const fb = document.getElementById("feedback");
   fb.textContent = "";
   fb.className = "feedback";
-  document.getElementById("explain").textContent = "";
+  const ex = document.getElementById("explain");
+  ex.textContent = "";
+  ex.scrollTop = 0;
   nextBtn.classList.add("ghosted");      // tar plats men syns inte
   nextBtn.classList.remove("hidden");
   nextBtn.textContent = "Fortsätt";
