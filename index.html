@@ -153,9 +153,7 @@ const questionSets = [
       explain: "Janina Falk är den läskigaste — alla vet det. Och hon bor i det här huset..." }
   ],
   [ // UPPSÄTTNING B — skräck, blod och Skived
-
-
-       {
+    {
       q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
       options: ["Kärlek", "En träpåle genom hjärtat", "Nocco"],
       answer: 1,
@@ -174,7 +172,7 @@ const questionSets = [
       explain: "Sveriges äldsta hembygdsförening är Ström i Jämtland (1909) och den nyaste är Rö utanför Norrtälje (2011)."
     },
     {
-                 q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
+      q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
       options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
       answer: 0,
       explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen."
@@ -347,6 +345,19 @@ document.addEventListener("keydown", e => {
 
   if (key === "enter" || key === " " || e.code === "Space") {
     e.preventDefault();
+
+    // På frågesidan: mellanslag/Enter = Fortsätt (endast efter svar)
+    const onQuestionPage = !document.getElementById("page3").classList.contains("hidden");
+    if (onQuestionPage) {
+      if (!nextBtn.classList.contains("ghosted") &&
+          !nextBtn.classList.contains("hidden") &&
+          questionIndex < questions.length) {
+        nextBtn.click();
+      }
+      return;
+    }
+
+    // På intro-sidorna: tryck första synliga knapp som vanligt
     const visible = [...document.querySelectorAll("div[id^='page']")]
       .find(d => !d.classList.contains("hidden"));
     if (visible) {
