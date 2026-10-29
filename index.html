@@ -10,7 +10,7 @@
 body { font-family: 'Special Elite', 'Courier New', monospace;
        background: url('https://images.unsplash.com/photo-1770105328579-a4aeaa36ddea?fm=jpg&q=60&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D')
                    center/cover no-repeat fixed;
-       color: #2b241c; display: flex; justify-content: center; align-items: center;
+       color: #2b241c; display: flex; justify-content: center; align-items: center;
        min-height: 100svh; margin: 0; }
 
 body::before { content: ""; position: fixed; inset: 0;
@@ -184,7 +184,7 @@ function showQuestion() {
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
 
-  const keys = ["Q", "6", "0"];
+  const keys = ["A", "B", "C"];
   const classes = ["alt-a", "alt-b", "alt-c"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
