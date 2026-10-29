@@ -64,6 +64,10 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
             text-align: center; margin: .75rem 0 .25rem; }
 .feedback.right { color: #3d5024; }
 .feedback.wrong { color: #8c3a32; }
+
+.explain { font-size: 1.05rem; line-height: 1.6; text-align: center;
+           margin: .5rem 0 .25rem; opacity: .9; }
+
 .hidden { display: none; }
 
 .fade-in { animation: pop 2s ease; }
@@ -88,6 +92,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   button { padding: 14px 10px; font-size: 1.05rem; }
   #options button { flex: 1 1 100%; white-space: normal; }
   .feedback { font-size: 1.2rem; }
+  .explain { font-size: .95rem; }
   .scare-text { font-size: 1.15rem; }
   .kodord { font-size: 1.2rem; letter-spacing: 2px; }
 }
@@ -126,6 +131,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
     <div id="progress" class="progress"></div>
     <div id="feedback" class="feedback"></div>
+    <p id="explain" class="explain"></p>
     <button id="nextBtn" class="hidden">Fortsätt</button>
     <button id="restartBtn" class="hidden">Börja om <small>(tryck "Fortsätt")</small></button>
   </div>
@@ -134,10 +140,14 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 <script>
 const questions = [
-  { q: "Vilken grönsak är en klassisk Halloween-symbol?", options: ["Äpple", "Pumpa", "Fiskpinne"], answer: 1 },
-  { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0 },
-  { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson (1855-1938), den svartklädda kvinnan med den tomma barnvagnen, som nu sägs spöka på olika platser i Skived?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1 },
-  { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2 }
+  { q: "Vilken grönsak är en klassisk Halloween-symbol?", options: ["Äpple", "Pumpa", "Fiskpinne"], answer: 1,
+    explain: "Pumpor används som lyktor på Halloween sedan 1800-talet — traditionen kom med irländska immigranter som tog pumpa när de inte hittade rotkol." },
+  { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0,
+    explain: "Halloween kommer från det keltiska Samhain-firandet i Irland. USA gjorde firandet stort, men ursprunget är irländskt." },
+  { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson (1855-1938), den svartklädda kvinnan med den tomma barnvagnen, som nu sägs spöka på olika platser i Skived?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1,
+    explain: "Hon kallades 'Kokla' av barnen i byn." },
+  { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
+    explain: "Janina Falk är den läskigaste — alla vet det. Kenta är bara snäll och Caligula är borta sedan länge." }
 ];
 
 const kodord = ["HEJA DJURGÅRDEN", "GOD MORGON", "GLAD PÅSK", "JAG HAR SKITIT I GRUSGÅNGEN", "GOD JUL"];
@@ -182,6 +192,7 @@ function showQuestion() {
   const fb = document.getElementById("feedback");
   fb.textContent = "";
   fb.className = "feedback";
+  document.getElementById("explain").textContent = "";
   nextBtn.classList.add("hidden");
   nextBtn.textContent = "Fortsätt";
   nextBtn.dataset.mode = "next";
@@ -202,6 +213,7 @@ function showQuestion() {
 function answer(correct, btn) {
   document.querySelectorAll("#options button").forEach(b => b.disabled = true);
   const fb = document.getElementById("feedback");
+  const q = questions[questionIndex];
 
   if (correct) {
     score++;
@@ -210,13 +222,15 @@ function answer(correct, btn) {
     fb.classList.add("right");
   } else {
     btn.classList.add("wrong");
-    document.querySelectorAll("#options button")[questions[questionIndex].answer].classList.add("correct");
+    document.querySelectorAll("#options button")[q.answer].classList.add("correct");
     fb.textContent = "✘ FEL! Rätt svar visas i grönt.";
     fb.classList.add("wrong");
+    document.getElementById("explain").textContent =
+      "Rätt svar: " + q.options[q.answer] + " — " + (q.explain || "");
   }
   document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
 
-  autoTimer = setTimeout(() => nextBtn.click(), 3000);
+  autoTimer = setTimeout(() => nextBtn.click(), 6000);
 }
 
 nextBtn.onclick = () => {
@@ -233,6 +247,7 @@ function endScreen() {
   const fb = document.getElementById("feedback");
   fb.textContent = "";
   fb.className = "feedback";
+  document.getElementById("explain").textContent = "";
   nextBtn.classList.add("hidden");
 
   const total = questions.length;
