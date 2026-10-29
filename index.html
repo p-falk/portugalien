@@ -114,7 +114,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   </div>
 
   <div id="page2" class="intro hidden">
-    <p> När du fått ditt kodord, tyck på ringklockan på den gula plattformen här till höger. När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
+    <p> När du fått ditt kodord, tyck på ringklockan till höger på panelen. När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
     <p> ...eller så blir du utskälld för att du svarat dåligt)</p>
     <p> ---</p>
     <p> 4 rätt =  Superbra godispåse! </p>
@@ -266,10 +266,10 @@ function endScreen() {
   }
 
   let verdict;
-  if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
-  else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
-  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
-  else                  verdict = "Urdåligt. Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
+  if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan testa att spela igem. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
+  else                  verdict = "Urdåligt. Tryck på ringklockan Du kan testa att spela igem. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
 
   document.getElementById("question").innerHTML =
     `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
