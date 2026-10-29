@@ -135,7 +135,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <div id="feedback" class="feedback"></div>
     <p id="explain" class="explain"></p>
     <button id="nextBtn" class="ghosted">Fortsätt</button>
-    <button id="restartBtn" class="hidden">Börja om <small>(tryck "Fortsätt")</small></button>
+    <button id="restartBtn" class="hidden">Börja om <small>(tryck mellanslag)</small></button>
   </div>
 
 </div>
@@ -253,13 +253,13 @@ function answer(correct, btn) {
   if (correct) {
     score++;
     btn.classList.add("correct");
-    fb.textContent = "✔ RÄTT!";
+    fb.textContent = "✔ RÄTT! Ett godispoäng!";
     fb.classList.add("right");
     document.getElementById("explain").textContent = q.explain || "";
   } else {
     btn.classList.add("wrong");
     document.querySelectorAll("#options button")[q.answer].classList.add("correct");
-    fb.textContent = "✘ FEL!";
+    fb.textContent = "✘ FEL! Rätt svar visas i grönt.";
     fb.classList.add("wrong");
     document.getElementById("explain").textContent =
       "Rätt svar: " + q.options[q.answer] + " — " + (q.explain || "");
@@ -348,13 +348,15 @@ document.addEventListener("keydown", e => {
   if (key === "enter" || key === " " || e.code === "Space") {
     e.preventDefault();
 
-    // På frågesidan: mellanslag/Enter = Fortsätt (endast efter svar)
+    // På frågesidan: mellanslag/Enter = Fortsätt, annars Börja om
     const onQuestionPage = !document.getElementById("page3").classList.contains("hidden");
     if (onQuestionPage) {
       if (!nextBtn.classList.contains("ghosted") &&
           !nextBtn.classList.contains("hidden") &&
           questionIndex < questions.length) {
         nextBtn.click();
+      } else if (!restartBtn.classList.contains("hidden")) {
+        restartBtn.click();          // sluten av spelet: börja om med space
       }
       return;
     }
