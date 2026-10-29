@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bus eller Skived</title>
+<title>Bus eller Skived...</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
 body { font-family: 'Special Elite', 'Courier New', monospace;
        background: url('https://images.unsplash.com/photo-1770105328579-a4aeaa36ddea?fm=jpg&q=60&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D')
                    center/cover no-repeat fixed;
-       color: #2b241c; display: flex; justify-content: center; align-items: center;
+       color: #2b241c;
+       display: flex; justify-content: center; align-items: center;
        min-height: 100svh; margin: 0; }
 
 body::before { content: ""; position: fixed; inset: 0;
@@ -235,18 +236,18 @@ function endScreen() {
 
   const total = questions.length;
 
-if (score === 0) {
-  document.getElementById("question").innerHTML =
-    `<h2>Slutpoäng: 0 av ${total}</h2>` +
-    `<p class="scare-text">Inga rätt... Folkbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>` +
-    `<img class="scare-img" src="https://gingerbluedecor.com/cdn/shop/files/HW-578.jpg?v=1754149083&width=800" alt="Skugga som väntar efter vägen">`;
-  restartBtn.classList.remove("hidden");
-  animate();
-  const sfx = new Audio("boo.mp3");   // t.ex. ett skratt, tjut eller "boo"
-  sfx.volume = 0.8;
-  sfx.play();
-  return;
-}
+  if (score === 0) {
+    document.getElementById("question").innerHTML =
+      `<h2>Slutpoäng: 0 av ${total}</h2>` +
+      `<p class="scare-text">Inga rätt... Folkbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>` +
+      `<img class="scare-img" src="https://gingerbluedecor.com/cdn/shop/files/HW-578.jpg?v=1754149083&width=800" alt="Skugga som väntar efter vägen">`;
+    restartBtn.classList.remove("hidden");
+    animate();
+    const sfx = new Audio("boo.mp3");   // t.ex. ett skratt, tjut eller "boo"
+    sfx.volume = 0.8;
+    sfx.play();
+    return;
+  }
 
   let verdict;
   if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan på den gula plattformen, och när de öppnar säg ditt kodord";
