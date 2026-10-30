@@ -142,24 +142,23 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 <script>
 const questionSets = [
-  [ // UPPSÄTTNING 0 — TV-spel och Sommarskuggan (kommer först)
-  { q: "Vad får man oftast när man knackar på dörren och säger 'Bus eller godis' på Halloween?",
-    options: ["Pengar", "Godis", "Gurkor"],
-    answer: 1,
-    explain: "Godis förstås! Traditionen kommer från gamla tider då man trodde att utklädda personer kunde hålla onda andar borta." },
-  { q: "Vilken frukt brukar man hugga ut ett läskigt ansikte i på Halloween?",
-    options: ["Pumpa", "Vattenmelon", "Ananas"],
-    answer: 0,
-    explain: "Pumpor är Halloween-klassikern. Man skär ut ögon, näsa och en tandrik mun och sätter ett ljus inuti — då ser det ut som ett spöke lyser!" },
-  { q: "Vad heter skuggfiguren som brukar dyka upp i SVTs Sommarlov?",
-    options: ["Skuggan Sune", "Sommarskuggan", "Wario"],
-    answer: 1,
-    explain: "Sommarskuggan är SVT:s sommarprogram-maskot som jagas av sommarvärdarna i Sommarlov — ett lika mystiskt som segt inslag sedan 2016." },
-  { q: "Vad heter den stora elaka sköldpaddan som hela tiden kidnappar prinsessan i Super Mario-spelen?",
-    options: ["Bowser", "Yoshi", "Toad"],
-    answer: 0,
-    explain: "Bowser är Marios ärkefiende — en eldsprutande sköldpaddskung som ständigt stjäl prinsessan Peach. Yoshi och Toad är däremot Marios vänner." }
-]
+  [ // UPPSÄTTNING 0 — Halloween, TV-spel och Sommarskuggan (kommer först)
+    { q: "Vad får man oftast när man knackar på dörren och säger 'Bus eller godis' på Halloween?",
+      options: ["Pengar", "Godis", "Gurkor"],
+      answer: 1,
+      explain: "Godis förstås! Traditionen kommer från gamla tider då man trodde att utklädda personer kunde hålla onda andar borta." },
+    { q: "Vilken frukt brukar man hugga ut ett läskigt ansikte i på Halloween?",
+      options: ["Pumpa", "Vattenmelon", "Ananas"],
+      answer: 0,
+      explain: "Pumpor är Halloween-klassikern. Man skär ut ögon, näsa och en tandrik mun och sätter ett ljus inuti — då ser det ut som ett spöke lyser!" },
+    { q: "Vad heter skuggfiguren som brukar dyka upp i SVTs Sommarlov?",
+      options: ["Skuggan Sune", "Sommarskuggan", "Wario"],
+      answer: 1,
+      explain: "Sommarskuggan är SVT:s sommarprogram-maskot som jagas av sommarvärdarna i Sommarlov — ett lika mystiskt som segt inslag sedan 2016." },
+    { q: "Vad heter den stora elaka sköldpaddan som hela tiden kidnappar prinsessan i Super Mario-spelen?",
+      options: ["Bowser", "Yoshi", "Toad"],
+      answer: 0,
+      explain: "Bowser är Marios ärkefiende — en eldsprutande sköldpaddskung som ständigt stjäl prinsessan Peach. Yoshi och Toad är däremot Marios vänner." }
   ],
   [ // UPPSÄTTNING A — era nuvarande frågor
     { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0,
@@ -171,33 +170,23 @@ const questionSets = [
     { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
       explain: "Janina Falk är den läskigaste läraren — Och hon bor i det här huset..." }
   ],
-  // ... uppsättning B som tidigare ...
-];
   [ // UPPSÄTTNING B — skräck, blod och Skived
-    {
-      q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
+    { q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
       options: ["Kärlek", "En träpåle genom hjärtat", "Nocco"],
       answer: 1,
-      explain: "I många vampyrberättelser sägs en träpåle genom hjärtat kunna döda vampyren."
-    },
-    {
-      q: "Blod kan vara läskigt, men är livsviktigt. Hur vilken av följande är en blodgrupp?",
+      explain: "I många vampyrberättelser sägs en träpåle genom hjärtat kunna döda vampyren." },
+    { q: "Blod kan vara läskigt, men är livsviktigt. Vilken av följande är en blodgrupp?",
       options: ["IJWBC", "JLC", "AB"],
       answer: 2,
-      explain: "Det så kallade AB0-systemets har fyra huvudgrupper: A, B, AB och 0."
-    },
-    {
-      q: "Ibland ser man döingar uppe på Hembygsgården i Skived, men det är oftast bara pensionärer. Vilket år grundades Forshaga hembygdsförening?",
+      explain: "Det så kallade AB0-systemet har fyra huvudgrupper: A, B, AB och 0." },
+    { q: "Ibland ser man döingar uppe på Hembygsgården i Skived, men det är oftast bara pensionärer. Vilket år grundades Forshaga hembygdsförening?",
       options: ["1689", "1936", "2025"],
       answer: 1,
-      explain: "Sveriges äldsta hembygdsförening är Ström i Jämtland (1909) och den nyaste är Rö utanför Norrtälje (2011)."
-    },
-    {
-      q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
+      explain: "Sveriges äldsta hembygdsförening är Ström i Jämtland (1909) och den nyaste är Rö utanför Norrtälje (2011)." },
+    { q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
       options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
       answer: 0,
-      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen."
-    }
+      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen." }
   ]
 ];
 
