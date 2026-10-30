@@ -8,7 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
 body { font-family: 'Special Elite', 'Courier New', monospace;
-       background: url('blood-forest-2560-x-1440-v0-6k13z693pyf71.webp')
+       background: url('https://images.unsplash.com/photo-1770105328579-a4aeaa36ddea?fm=jpg&q=60&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D')
                    center/cover no-repeat fixed;
        color: #2b241c;
        display: flex; justify-content: center; align-items: center;
@@ -20,9 +20,10 @@ body::before { content: ""; position: fixed; inset: 0;
                z-index: -1;
                transition: background 1s ease; }
 
-/* RÖD skrämbakgrund — varningssidan + sista frågan */
-body.scary { background: #4a0e0e; }
-body.scary::before { background: rgba(120, 16, 16, .72); }
+/* Skrämbakgrund — varningssidan + sista frågan: blodgruvan */
+body.scary { background: url('blood-forest-2560-x-1440-v0-6k13z693pyf71.webp')
+                        center/cover no-repeat fixed; }
+body.scary::before { background: rgba(120, 16, 16, .55); }
 
 .card { background: #ece5d3;
          border: 1px solid #b8ad93;
@@ -137,7 +138,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
     <p>Jag har en sak som jag glömde att berätta.</p>
     <p>Om du svarar fel på nästa fråga kommer <strong>Katten i hatten!</strong></p>
-    <p>Han lurkar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
+    <p>Han lurker här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
     <p>Vem vet; det kanske är han som öppnar dörren om du trycker på ringklockan. Lycka till...</p>
     <p>Men du måste svara; Om du går här ifrån utan att svara: då kommer han...</p>
     <button id="warnBtn">Fortsätt</button>
@@ -186,7 +187,7 @@ const questionSets = [
   ]
 ];
 
-const kodord = ["HEJA DJURGÅRDEN", "FÖRLÅT", "GOD JUL", "SILVER", "LYKKE"];
+const kodord = ["HEJA DJURGÅRDEN", "GOD MORGON", "GLAD PÅSK", "JAG HAR SKITIT I GRUSGÅNGEN", "GOD JUL"];
 
 const pages = ["page0", "page1", "page2", "page3"];
 
@@ -220,7 +221,7 @@ function showPage(n) {
 function showWarn() {
   pages.forEach(id => document.getElementById(id).classList.add("hidden"));
   document.getElementById("pageWarn").classList.remove("hidden");
-  setScary(true);                  // RÖD bakgrund på varningssidan
+  setScary(true);                  // blodsogens bakgrund på varningssidan
   animate();
 }
 
@@ -238,7 +239,7 @@ function showQuestion() {
   const total = questions.length;
 
   restartBtn.classList.add("hidden");
-  setScary(questionIndex === total - 1);   // RÖD bakgrund bara på sista frågan
+  setScary(questionIndex === total - 1);   // blodsogens bakgrund bara på sista frågan
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
