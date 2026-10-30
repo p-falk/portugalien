@@ -123,13 +123,16 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <p> 3 rätt =  En helt OK chokladbit. </p>
     <p> 2 rätt =  En rätt tråkig klubba. </p>
     <p> 1 rätt =  En gammal morot  </p>
-    <p> 0 rätt = Inget godis. Allmänbildningens spöke hemsöker dig...</p>
+    <p> 0 rätt = Inget godis...</p>
     <button id="instrBtn2">Fortsätt >>> </button>
   </div>
 
   <div id="pageWarn" class="hidden">
     <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
-    <p class="scare-text" style="font-size:1.8rem">Jag har en sak som jag glömde att berätta. Om du svarar du fel på nästa fråga kommer Katten i hatten! Han lurar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller vem vet; det kanske är han som öppnar dörren om du tyrcker på ringklockan. Lycka till...</p>
+    <p class="scare-text" style="font-size:1.8rem">Jag har en sak som jag glömde att berätta.</p>
+       <p> Om du svarar du fel på nästa fråga kommer Katten i hatten! </p>
+         <p> Han lurar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
+       <p>  Vem vet; det kanske är han som öppnar dörren om du tyrcker på ringklockan. Lycka till...</p>
     <button id="warnBtn">Fortsätt (på egen risk)</button>
   </div>
 
@@ -167,14 +170,12 @@ const questionSets = [
       options: ["IJWBC", "JLC", "AB"],
       answer: 2,
       explain: "Det så kallade AB0-systemet har fyra huvudgrupper: A, B, AB och 0." },
-    { q: "Ibland ser man döingar uppe på Hembygsgården i Skived, men det är oftast bara pensionärer. Vilket år grundades Forshaga hembygdsförening?",
-      options: ["1689", "1936", "2025"],
-      answer: 1,
-      explain: "Sveriges äldsta hembygdsförening är Ström i Jämtland (1909) och den nyaste är Rö utanför Norrtälje (2011)." },
     { q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
       options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
       answer: 0,
       explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen." }
+             { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
+      explain: "Janina Falk är den läskigaste läraren — Och hon bor i det här huset..." }
   ]
 ];
 
