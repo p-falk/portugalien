@@ -117,7 +117,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
   <div id="page2" class="intro hidden">
     <p> När du fått ditt kodord, tyck på ringklockan till höger. </p>
- <p> När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
+    <p> När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
     <p> ---------</p>
     <p> 4 rätt =  Superbra godispåse! </p>
     <p> 3 rätt =  En helt OK chokladbit. </p>
@@ -125,6 +125,12 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <p> 1 rätt =  En gammal morot  </p>
     <p> 0 rätt = Inget godis. Allmänbildningens spöke hemsöker dig...</p>
     <button id="instrBtn2">Fortsätt >>> </button>
+  </div>
+
+  <div id="pageWarn" class="hidden">
+    <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
+    <p class="scare-text" style="font-size:1.8rem">Jag har en sak som jag glömde att berätta. Om du svarar du fel på nästa fråga kommer Katten i hatten! Han lurar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller vem vet; det kanske är han som öppnar dörren om du tyrcker på ringklockan. Lycka till...</p>
+    <button id="warnBtn">Fortsätt (på egen risk)</button>
   </div>
 
   <div id="page3" class="hidden">
@@ -194,12 +200,22 @@ function animate() {
 function showPage(n) {
   pages.forEach((id, i) =>
     document.getElementById(id).classList.toggle("hidden", i !== n));
+  document.getElementById("pageWarn").classList.add("hidden");
+  animate();
+}
+
+function showWarn() {
+  pages.forEach(id => document.getElementById(id).classList.add("hidden"));
+  document.getElementById("page3").classList.remove("hidden");
+  document.getElementById("warning", { }).classList?.add?.("hidden"); // ingen varningsrad på frågesidan
+  document.getElementById("pageWarn").classList.remove("hidden");
   animate();
 }
 
 document.getElementById("startBtn").onclick  = () => showPage(1);
 document.getElementById("instrBtn1").onclick = () => showPage(2);
 document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
+document.getElementById("warnBtn").onclick = () => showQuestion();
 
 function showQuestion() {
   const q = questions[questionIndex];
@@ -268,6 +284,7 @@ nextBtn.onclick = () => {
   clearTimeout(autoTimer);
   questionIndex++;
   if (questionIndex >= questions.length) return endScreen();
+  if (questionIndex === 3) return showWarn();          // varningssida före fråga 4
   showQuestion();
 };
 
