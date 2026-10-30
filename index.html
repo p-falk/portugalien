@@ -215,6 +215,7 @@ document.getElementById("instrBtn1").onclick = () => showPage(2);
 document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
 document.getElementById("warnBtn").onclick = () => {
   document.getElementById("pageWarn").classList.add("hidden");
+  document.getElementById("page3").classList.remove("hidden");   // ← visar frågesidan igen
   showQuestion();
 };
 
