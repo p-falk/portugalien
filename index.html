@@ -47,7 +47,7 @@ button { display: block; width: 100%; margin: 8px 0; padding: 18px;
 button:hover:not(:disabled) { box-shadow: 0 6px 14px rgba(0,0,0,.35);
                                background: #cfc5ab; }
 button:disabled { opacity: .5; cursor: default; }
-button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
+button.correct { background: #5a6e37; color: #ece5d3; border-color: #ById5a6e37; }
 button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 #options { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -130,10 +130,10 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
   <div id="pageWarn" class="hidden">
     <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
     <p>Jag har en sak som jag glömde att berätta.</p>
-    <p>Om du svarar fel på nästa fråga kommer <bold>Katten i hatten!</bold></p>
-    <p>Han lurar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
+    <p>Om du svarar fel på nästa fråga kommer <strong>Katten i hatten!</strong></p>
+    <p>Han lurkar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
     <p>Vem vet; det kanske är han som öppnar dörren om du trycker på ringklockan. Lycka till...</p>
-     <p>Men du måste svara; Om du går här ifrån utan att svara: då kommer han...</p>
+    <p>Men du måste svara; Om du går här ifrån utan att svara: då kommer han...</p>
     <button id="warnBtn">Fortsätt</button>
   </div>
 
@@ -174,8 +174,8 @@ const questionSets = [
     { q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
       options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
       answer: 0,
-      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen." }
-             { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
+      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen." },
+    { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
       explain: "Janina Falk är den läskigaste läraren — Och hon bor i det här huset..." }
   ]
 ];
@@ -217,7 +217,7 @@ document.getElementById("instrBtn1").onclick = () => showPage(2);
 document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
 document.getElementById("warnBtn").onclick = () => {
   document.getElementById("pageWarn").classList.add("hidden");
-  document.getElementById("page3").classList.remove("hidden");   // ← visar frågesidan igen
+  document.getElementById("page3").classList.remove("hidden");
   showQuestion();
 };
 
@@ -288,7 +288,7 @@ nextBtn.onclick = () => {
   clearTimeout(autoTimer);
   questionIndex++;
   if (questionIndex >= questions.length) return endScreen();
-  if (questionIndex === 3) return showWarn();          // varningssida före fråga 4
+  if (questionIndex === questions.length - 1) return showWarn();  // varning före sista frågan
   showQuestion();
 };
 
@@ -354,7 +354,7 @@ bumpIdle();
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
 
-  // Varningssidan: Enter/mellanslag = Fortsätt (på egen risk)
+  // Varningssidan: Enter/mellanslag = Fortsätt
   if (!document.getElementById("pageWarn").classList.contains("hidden")) {
     if (key === "enter" || key === " " || e.code === "Space") {
       e.preventDefault();
@@ -374,7 +374,7 @@ document.addEventListener("keydown", e => {
           questionIndex < questions.length) {
         nextBtn.click();
       } else if (!restartBtn.classList.contains("hidden")) {
-        restartBtn.click();          // sluten av spelet: börja om med space
+        restartBtn.click();          // slutet av spelet: börja om med space
       }
       return;
     }
