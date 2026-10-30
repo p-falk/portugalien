@@ -206,8 +206,6 @@ function showPage(n) {
 
 function showWarn() {
   pages.forEach(id => document.getElementById(id).classList.add("hidden"));
-  document.getElementById("page3").classList.remove("hidden");
-  document.getElementById("warning", { }).classList?.add?.("hidden"); // ingen varningsrad på frågesidan
   document.getElementById("pageWarn").classList.remove("hidden");
   animate();
 }
@@ -215,7 +213,10 @@ function showWarn() {
 document.getElementById("startBtn").onclick  = () => showPage(1);
 document.getElementById("instrBtn1").onclick = () => showPage(2);
 document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
-document.getElementById("warnBtn").onclick = () => showQuestion();
+document.getElementById("warnBtn").onclick = () => {
+  document.getElementById("pageWarn").classList.add("hidden");
+  showQuestion();
+};
 
 function showQuestion() {
   const q = questions[questionIndex];
@@ -340,7 +341,7 @@ let idleTimer = null;
 
 function bumpIdle() {
   clearTimeout(idleTimer);
-  idleTimer = setTimeout(resetGame, 72000);
+  idleTimer = setTimeout(resetGame, 72022);
 }
 
 document.addEventListener("click", bumpIdle);
@@ -349,6 +350,15 @@ bumpIdle();
 
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
+
+  // Varningssidan: Enter/mellanslag = Fortsätt (på egen risk)
+  if (!document.getElementById("pageWarn").classList.contains("hidden")) {
+    if (key === "enter" || key === " " || e.code === "Space") {
+      e.preventDefault();
+      document.getElementById("warnBtn").click();
+    }
+    return;
+  }
 
   if (key === "enter" || key === " " || e.code === "Space") {
     e.preventDefault();
