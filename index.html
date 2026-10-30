@@ -12,11 +12,17 @@ body { font-family: 'Special Elite', 'Courier New', monospace;
                    center/cover no-repeat fixed;
        color: #2b241c;
        display: flex; justify-content: center; align-items: center;
-       min-height: 100svh; margin: 0; }
+       min-height: 100svh; margin: 0;
+       transition: background-color 1s ease; }
 
 body::before { content: ""; position: fixed; inset: 0;
                background: rgba(13, 17, 23, .75);
-               z-index: -1; }
+               z-index: -1;
+               transition: background 1s ease; }
+
+/* RÖD skrämbakgrund — varningssidan + sista frågan */
+body.scary { background: #4a0e0e; }
+body.scary::before { background: rgba(120, 16, 16, .72); }
 
 .card { background: #ece5d3;
          border: 1px solid #b8ad93;
@@ -47,7 +53,7 @@ button { display: block; width: 100%; margin: 8px 0; padding: 18px;
 button:hover:not(:disabled) { box-shadow: 0 6px 14px rgba(0,0,0,.35);
                                background: #cfc5ab; }
 button:disabled { opacity: .5; cursor: default; }
-button.correct { background: #5a6e37; color: #ece5d3; border-color: #ById5a6e37; }
+button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
 button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
 
 #options { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -131,7 +137,7 @@ button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
     <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
     <p>Jag har en sak som jag glömde att berätta.</p>
     <p>Om du svarar fel på nästa fråga kommer <strong>Katten i hatten!</strong></p>
-    <p>Han lurkar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
+    <p>Han lurar här bakom hörnet. Eller kanske i växthuset bakom dig. Eller i häcken...</p>
     <p>Vem vet; det kanske är han som öppnar dörren om du trycker på ringklockan. Lycka till...</p>
     <p>Men du måste svara; Om du går här ifrån utan att svara: då kommer han...</p>
     <button id="warnBtn">Fortsätt</button>
@@ -193,6 +199,10 @@ const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
 const card = document.querySelector(".card");
 
+function setScary(on) {
+  document.body.classList.toggle("scary", on);
+}
+
 function animate() {
   card.classList.remove("fade-in");
   void card.offsetWidth;
@@ -203,12 +213,14 @@ function showPage(n) {
   pages.forEach((id, i) =>
     document.getElementById(id).classList.toggle("hidden", i !== n));
   document.getElementById("pageWarn").classList.add("hidden");
+  setScary(false);                 // intro-sidor + första frågan: vanlig bakgrund
   animate();
 }
 
 function showWarn() {
   pages.forEach(id => document.getElementById(id).classList.add("hidden"));
   document.getElementById("pageWarn").classList.remove("hidden");
+  setScary(true);                  // RÖD bakgrund på varningssidan
   animate();
 }
 
@@ -226,6 +238,7 @@ function showQuestion() {
   const total = questions.length;
 
   restartBtn.classList.add("hidden");
+  setScary(questionIndex === total - 1);   // RÖD bakgrund bara på sista frågan
 
   document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
   document.getElementById("progress").textContent =
@@ -293,6 +306,7 @@ nextBtn.onclick = () => {
 };
 
 function endScreen() {
+  setScary(false);                 // slutsidan: vanlig bakgrund igen
   document.getElementById("barFill").style.width = "100%";
   document.getElementById("progress").textContent = "";
   document.getElementById("options").innerHTML = "";
